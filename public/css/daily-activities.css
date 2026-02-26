@@ -1,0 +1,118 @@
+.section-title-daily-activities {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #d51c48;
+    margin-bottom: 0.5rem;
+    padding-left: 20px;
+}
+
+.section-lead-daily-activities {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    padding-left: 20px;
+}
+
+.filter-section {
+    position: relative;
+    flex: 1;
+    margin-right: 15px;
+}
+
+.filter-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 20px;
+    border: 1px solid #e6eaea;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    margin-top: 10px;
+}
+
+.filter-content.show {
+    display: block;
+}
+
+.print-section-daily-activities {
+    margin-top: 0;
+}
+
+.btn-filter {
+    background-color: #d51c48 !important;
+    border-color: #d51c48 !important;
+    border-radius: 20px;
+    color: #ffffff !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}
+
+.modal-header-content {
+    flex: 1;
+    padding-left: 15px;
+}
+
+.modal-title-kry {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-bottom: 0.25rem;
+}
+
+.modal-subtitle-kry {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.icon-container {
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .filter-and-print-container {
+        flex-direction: column;
+    }
+
+    .filter-section {
+        margin-right: 0;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    .print-section {
+        align-self: flex-end;
+    }
+
+    .filter-content {
+        position: relative;
+        width: 100%;
+    }
+}

@@ -1,0 +1,213 @@
+.presence-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+    margin-left: 0;
+    text-align: left;
+}
+
+.presence-header {
+    /* border-bottom: 2px solid #D51C48; */
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.company-name {
+    color: #D51C48;
+    font-weight: 800;
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+.company-subtitle {
+    color: #333;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.company-address {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.student-info-aligned {
+    margin: 20px 0;
+    padding: 0;
+    text-align: left;
+}
+
+.info-item-aligned {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    padding: 0;
+}
+
+.info-label-aligned {
+    font-weight: 600;
+    color: #333;
+    min-width: 160px;
+    text-align: left;
+}
+
+.info-separator-aligned {
+    color: #333;
+    margin: 0 8px;
+    min-width: 10px;
+}
+
+.info-value-aligned {
+    color: #333;
+    text-align: left;
+    font-weight: 400;
+    flex: 1;
+}
+
+.divider-line {
+    border-bottom: 2px solid #D51C48;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.month-section {
+    text-align: center;
+    margin: 25px 0 20px 0;
+}
+
+.month-title {
+    color: #333;
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0;
+}
+
+.presence-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.presence-table th {
+    background: #D51C48;
+    color: white;
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid #dee2e6;
+}
+
+.presence-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+}
+
+.presence-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.presence-status {
+    color: #47c363;
+    font-weight: 600;
+}
+
+.status-notyet {
+    color: #ffa426;
+    font-weight: 600;
+}
+
+.presence-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.summary-section {
+    flex: 0 0 auto;
+    order: 1;
+}
+
+.summary-table {
+    width: 250px;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-right: 20px;
+}
+
+.summary-table td {
+    padding: 8px 12px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.summary-table tr:first-child {
+    background-color: #D51C48;
+    color: white;
+    font-weight: 600;
+}
+
+.summary-table tr:not(:first-child) {
+    background-color: #f8f9fa;
+}
+
+
+.signature-section {
+    flex: 0 0 auto;
+    order: 2;
+}
+
+.tanggal-info {
+    text-align: left;
+}
+
+.tanggal-info p {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.signature-space {
+    height: 60px;
+    margin: 10px 0;
+}
+
+.e-signature-note {
+    color: #666;
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .presence-footer {
+        flex-direction: column-reverse;
+        gap: 20px;
+    }
+
+    .summary-section {
+        order: 2;
+        width: 100%;
+    }
+
+    .signature-section {
+        order: 1;
+        width: 100%;
+    }
+
+    .tanggal-info {
+        text-align: center; 
+    }
+
+    .summary-table {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}

@@ -1,0 +1,68 @@
+.laporan-container {
+    padding-left: 20px;
+    padding-right: 40px;
+}
+
+.laporan-card {
+    border-radius: 10px;
+    border: 1px solid #e5e5e5;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-top: 10px;
+}
+
+.laporan-card .form-control {
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+.laporan-card .form-control:focus {
+    border-color: #d51c48;
+    box-shadow: 0 0 0 0.2rem rgba(213, 28, 72, 0.1);
+}
+
+.section-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.section-title-print-report-pm {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #d51c48;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.section-lead-print-report-pm {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+}
+
+.btn-filter {
+    background-color: #d51c48 !important;
+    border-color: #d51c48 !important;
+    border-radius: 20px;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    min-width: 8rem !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+    .laporan-container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .btn-danger {
+        width: 100%;
+    }
+}

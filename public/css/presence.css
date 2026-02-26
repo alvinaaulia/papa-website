@@ -1,0 +1,158 @@
+.section-title-absensi {
+    font-size: 1.5rem;
+    color: #d51c48;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.section-lead-absensi {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    padding-left: 20px;
+}
+
+.font-color {
+    color: #000000;
+    font-weight: 600;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.btn-sm-absen {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: 1.2rem;
+}
+
+.btn-filter {
+    display: flex !important;
+    flex-direction: row!important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+    background-color: #d51c48 !important;
+    border-radius: 20px  !important;
+    color: #fff !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}
+
+/* ===== PAGINATION STYLES ===== */
+.pagination {
+    margin-bottom: 0;
+}
+
+.pagination .page-item .page-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+/* ===== FILTER FORM STYLES ===== */
+#filterForm {
+    padding: 0;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.daterange-cus {
+    min-height: calc(1.5em + 0.75rem + 2px);
+}
+
+.select2-container--default .select2-selection--single {
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    border: 1px solid #e4e6fc;
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    height: calc(1.5em + 0.75rem + 2px);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .card-header-action {
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .card-header-action .btn {
+        width: 100%;
+    }
+
+    .card-header-form {
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .form-group.col-md-4,
+    .form-group.col-md-3,
+    .form-group.col-md-2 {
+        margin-bottom: 1rem;
+    }
+
+    .section-title-absensi,
+    .section-lead-absensi {
+        padding-left: 0;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #modalPrint .modal-dialog {
+        margin: 1rem;
+    }
+
+    #modalPrint .modal-content {
+        border-radius: 8px;
+    }
+
+    #modalPrint .modal-header {
+        padding: 1rem 1rem 0;
+    }
+
+    #modalPrint .modal-body {
+        padding: 0 1rem 1rem;
+    }
+
+    #modalPrint .icon-container {
+        width: 40px;
+        height: 40px;
+    }
+
+    #modalPrint .icon-container i {
+        font-size: 1.25rem;
+    }
+}

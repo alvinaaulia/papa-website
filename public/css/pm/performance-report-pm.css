@@ -1,0 +1,75 @@
+.kegiatan-harian-container {
+    padding: 20px;
+}
+
+.btn-filter {
+    background-color: #d51c48 !important;
+    border-color: #d51c48 !important;
+    border-radius: 20px;
+    color: #ffffff !important;
+    font-size: 15px !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}
+
+.performance-title{
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #d51c48;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.performance-subtitle {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+}
+
+/* Tabs Styling */
+.performance-tabs {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 5px;
+    border: 1px solid #e3e6f0;
+}
+
+.performance-tabs .nav-link {
+    color: #6c757d;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin: 0 2px;
+    transition: all 0.3s ease;
+}
+
+.performance-tabs .nav-link i {
+    margin-right: 8px;
+}
+
+.performance-tabs .nav-link.active {
+    background: linear-gradient(135deg, #d51c48, #ff557d);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(213, 28, 72, 0.3);
+}
+
+.performance-tabs .nav-link:hover:not(.active) {
+    background: #e9ecef;
+    color: #495057;
+}
+
+
+@media (max-width: 768px) {
+    .table-responsive {
+        border: 1px solid #e3e6f0;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+}

@@ -1,0 +1,139 @@
+.section-title-employment-hrd {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #d51c48;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.section-lead-employment-hrd {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 0.35em 0.65em;
+}
+
+.badge-success-hrd {
+    background-color: #d1fae5 !important;
+    color: #047857 !important;
+}
+
+.badge-warning-hrd {
+    background-color: #fef3c7 !important;
+    color: #d97706 !important;
+}
+
+.badge-info-hrd {
+    background-color: #fee2e2 !important;
+    color: #b91c1c !important;
+}
+
+.btn-filter {
+    background-color: #d51c48 !important;
+    border-color: #d51c48 !important;
+    border-radius: 20px;
+    color: #ffffff !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}
+
+.list-group-item {
+    border: 1px solid #e3eaef;
+    padding: 0.75rem 1.25rem;
+}
+
+.custom-checkbox {
+    width: 100%;
+}
+
+.custom-control-label {
+    cursor: pointer;
+    width: 100%;
+}
+
+.custom-control-label::before,
+.custom-control-label::after {
+    top: 0.25rem;
+}
+
+
+.modal-sm {
+    max-width: 400px;
+}
+
+.modal-content {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    border-bottom: none;
+    padding: 16px 16px 0 16px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.d-flex-gap-2 {
+    gap: 8px !important;
+}
+
+.modal-header-content {
+    flex: 1;
+    padding-left: 15px;
+}
+
+.modal-title-pm {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-bottom: 0.25rem;
+}
+
+.modal-subtitle-pm {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.icon-container {
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.modal-footer.border-0 {
+    border-top: none !important;
+    padding-top: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 1.25rem;
+    }
+
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+
+    .btn-sm {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.7rem;
+    }
+}

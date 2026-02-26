@@ -1,0 +1,40 @@
+.list-hrd-title {
+    font-size: 1.4rem;
+    color: #d51c48;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.list-hrd-subtitle {
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    padding-left: 20px;
+}
+
+
+.table-title {
+    font-weight: 600;
+    color: #D51C48;
+    margin-bottom: 10px;
+}
+
+.table-divider {
+    border: 1px solid #D51C48;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+
+
+@media (max-width: 768px) {
+    .section-title-hrd {
+        font-size: 18px;
+    }
+
+    .btn-detail {
+        font-size: 13px;
+        padding: 5px 14px;
+    }
+}

@@ -1,0 +1,315 @@
+/* Form Grid Styles */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #D51C48;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-control.custom-input {
+    border: 1px solid #e3e6f0;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: #2E2E2E;
+    transition: all 0.3s ease;
+    width: 100%;
+    background-color: #f8f9fa;
+}
+
+.form-control.custom-input:focus {
+    border-color: #D51C48;
+    box-shadow: 0 0 0 0.2rem rgba(213, 28, 72, 0.25);
+    outline: none;
+}
+
+.form-control.custom-input::placeholder {
+    color: #6c757d;
+    opacity: 0.7;
+}
+
+.form-control.custom-input:read-only {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+/* Project Info Styles */
+.project-info {
+    background-color: #ffff;
+    padding: 15px;
+    border-radius: 5px;
+    border-top: 40px solid #D51C48;
+}
+
+.project-info h6 {
+    color: #D51C48;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.project-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.project-details span {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.5em 0.75em;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.badge-secondary-details {
+    background-color: #E5E7EB;
+    color: #374151 !important;
+}
+
+.badge-info-details {
+    background-color: #DBEAFE;
+    color: #1D4ED8 !important;
+}
+
+.badge-warning-details {
+    background-color: #FEF3C7;
+    color: #D97706 !important;
+}
+
+.badge-success-details {
+    background-color: #D1FAE5;
+    color: #047857 !important;
+}
+
+.badge-danger-details {
+    background-color: #FEE2E2;
+    color: #B91C1C !important;
+}
+
+/* Section Title Styles */
+.section-title-daily-activities {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #d51c48;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.section-lead-daily-activities {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+}
+
+/* Button Styles */
+.btn-filter {
+    background-color: #d51c48 !important;
+    border-color: #d51c48 !important;
+    border-radius: 20px;
+    color: #ffffff !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}
+
+/* Priority Styles */
+.priority {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.priority-urgent {
+    background-color: #FEE2E2;
+    color: #B91C1C;
+    border: 1px solid #FEE2E2;
+}
+
+.priority-high {
+    background-color: #FEF3C7;
+    color: #D97706;
+    border: 1px solid #FEF3C7;
+}
+
+.priority-normal {
+    background-color: #DBEAFE;
+    color: #1D4ED8;
+    border: 1px solid #DBEAFE;
+}
+
+.priority-clear {
+    background-color: #E5E7EB;
+    color: #374151;
+    border: 1px solid #E5E7EB;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    padding: 1.5rem 1.5rem 0.5rem;
+}
+
+.modal-body {
+    padding: 0 1.5rem 1rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem 1.5rem;
+}
+
+/* Activity Info Styles */
+.activity-info {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.info-item {
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #D51C48;
+    min-width: 120px;
+}
+
+.info-value {
+    color: #2E2E2E;
+    flex: 1;
+}
+
+/* File Upload Styles */
+.file-upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+.file-upload-area:hover {
+    border-color: #D51C48;
+    background-color: #fff;
+}
+
+.file-upload-area.dragover {
+    border-color: #D51C48;
+    background-color: rgba(213, 28, 72, 0.05);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        font-size: 0.85rem;
+    }
+
+    .form-control.custom-input {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .project-details {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    #rincianTable {
+        font-size: 0.85rem;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+    }
+
+    .info-item {
+        flex-direction: column;
+    }
+
+    .info-label {
+        min-width: auto;
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .form-label {
+        font-size: 0.8rem;
+    }
+
+    .form-control.custom-input {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+    }
+
+    .section-title-daily-activities {
+        font-size: 1.25rem;
+    }
+
+    .section-lead-daily-activities {
+        font-size: 0.9rem;
+    }
+
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    .activity-info {
+        padding: 0.75rem;
+    }
+}

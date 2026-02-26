@@ -1,0 +1,40 @@
+.btn-filter {
+    background-color: #d51c48 !important;
+    border-color: #d51c48 !important;
+    border-radius: 20px !important;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    min-width: 8rem !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}
+
+.section-title-print-report-hrd {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #d51c48;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.section-lead-print-report-hrd {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+}
+
+@media (max-width: 768px) {
+    .laporan-container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .btn-danger {
+        width: 100%;
+    }
+}

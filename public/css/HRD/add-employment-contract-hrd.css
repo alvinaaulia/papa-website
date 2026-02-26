@@ -1,0 +1,46 @@
+.title-employment-hrd {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #D51C48;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.subtitle-employment-hrd {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.card-header {
+    font-size: 1.1rem;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.btn {
+    border-radius: 20px;
+}
+
+.btn-filter {
+    background-color: #d51c48 !important;
+    border-color: #d51c48 !important;
+    border-radius: 20px;
+    color: #ffffff !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}

@@ -1,0 +1,335 @@
+:root {
+    --primary-color: #D51C48;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --light-bg: #f8f9fa;
+    --border-color: #dee2e6;
+    --table-header-bg: #343a40;
+    --badge-bg: #D51C48;
+}
+
+.section-header {
+    margin-bottom: 2rem;
+}
+
+.section-header-breadcrumb {
+    margin-top: 0.5rem;
+}
+
+.breadcrumb-item.active {
+    color: var(--primary-color);
+}
+
+.breadcrumb-item a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-color);
+}
+
+.section-title-daily-activity-pm {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #D51C48;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.section-lead-daily-activity-pm {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: none;
+    padding: 1.5rem 1.5rem 0.5rem;
+}
+
+.card-header h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+/* .card-body {
+    padding: 1.5rem;
+} */
+
+.table {
+    margin-bottom: 0;
+}
+
+.table-bordered {
+    border: 1px solid var(--border-color) !important;
+}
+
+.table thead th {
+    background-color: var(--table-header-bg);
+    color: white;
+    font-weight: 600;
+    border-bottom: none;
+    padding: 1rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-color: var(--border-color);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.btn-filter {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+    background-color: #d51c48 !important;
+    border-radius: 20px  !important;
+    color: #fff !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}
+
+hr {
+    border-top: 2px solid var(--primary-color);
+    opacity: 1;
+    margin: 0;
+}
+
+.modal-header-content {
+    flex: 1;
+    padding-left: 15px;
+}
+
+.modal-title-pm {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-bottom: 0.25rem;
+}
+
+.modal-subtitle-pm {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.icon-container {
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.btn-back {
+    background-color: #ffffff !important;
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #f8f9fa !important;
+    border-color: #000000 !important;
+    color: #000000 !important;
+    transform: translateY(-1px);
+}
+
+.btn-back:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.modal-footer.border-0 {
+    border-top: none !important;
+    padding-top: 0;
+}
+
+.modal-footer .btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+}
+
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+@media (max-width: 768px) {
+    .section-title-daily-activity-pm {
+        font-size: 1.5rem;
+        text-align: center;
+        padding-left: 0;
+    }
+
+    .section-lead-daily-activity-pm {
+        text-align: center;
+        padding-left: 0;
+    }
+
+    .text-md-right {
+        text-align: center !important;
+    }
+
+    .d-inline-flex {
+        flex-direction: column;
+        gap: 10px !important;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+
+    .card-header {
+        padding: 1rem 1rem 0.5rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .modal-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .modal-header-content {
+        padding-left: 0;
+        margin-top: 10px;
+    }
+
+    .icon-container {
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .section-title-daily-activity-pm {
+        font-size: 1.3rem;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+@media print {
+    .btn {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+    }
+
+    .badge-status-pm {
+        background-color: #6c757d !important;
+        color: white !important;
+    }
+}
+
+.table-loading {
+    position: relative;
+}
+
+.table-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #dee2e6;
+}
+
+.empty-state h4 {
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}

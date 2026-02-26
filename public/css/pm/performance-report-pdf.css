@@ -1,0 +1,256 @@
+/* Reset dan Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #333;
+    background: #fff;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #d51c48;
+}
+
+.header h1 {
+    font-size: 18px;
+    color: #d51c48;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Informasi Karyawan */
+.employee-info {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border-left: 4px solid #d51c48;
+}
+
+.info-table {
+    width: 100%;
+}
+
+.info-table td {
+    padding: 3px 0;
+    vertical-align: top;
+}
+
+/* Section Styling */
+.section {
+    margin-bottom: 25px;
+    page-break-inside: avoid;
+}
+
+.section h2 {
+    font-size: 14px;
+    color: #d51c48;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e3e6f0;
+    font-weight: bold;
+}
+
+/* Table Styling */
+.summary-table,
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 11px;
+}
+
+.summary-table th,
+.detail-table th {
+    background: #343a40;
+    color: #fff;
+    padding: 8px 5px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    font-weight: bold;
+}
+
+.summary-table td,
+.detail-table td {
+    padding: 8px 5px;
+    border: 1px solid #dee2e6;
+    text-align: center;
+}
+
+.summary-table tbody tr:nth-child(even),
+.detail-table tbody tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.total-row {
+    background: #e9ecef !important;
+    font-weight: bold;
+}
+
+.total-row td {
+    background: #e9ecef;
+}
+
+/* Keterangan Skor */
+.score-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.score-info h3 {
+    font-size: 12px;
+    color: #d51c48;
+    margin-bottom: 10px;
+}
+
+.score-table {
+    width: auto;
+}
+
+.score-table td {
+    padding: 2px 15px 2px 0;
+    vertical-align: top;
+}
+
+/* Footer */
+.footer {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+    font-size: 10px;
+    color: #6c757d;
+}
+
+.footer-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.footer-left,
+.footer-right {
+    flex: 1;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+.page-info {
+    text-align: center;
+    font-style: italic;
+}
+
+/* Badge Styling untuk Predikat */
+.predikat-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.badge-sangat-baik {
+    background: #28a745;
+    color: white;
+}
+
+.badge-baik {
+    background: #007bff;
+    color: white;
+}
+
+.badge-cukup {
+    background: #ffc107;
+    color: black;
+}
+
+.badge-buruk {
+    background: #fd7e14;
+    color: white;
+}
+
+.badge-sangat-buruk {
+    background: #dc3545;
+    color: white;
+}
+
+/* Print Specific Styles */
+@media print {
+    body {
+        padding: 0;
+        margin: 0;
+        font-size: 11px;
+    }
+
+    .container {
+        max-width: none;
+        margin: 0;
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 16px;
+    }
+
+    .section h2 {
+        font-size: 13px;
+    }
+
+    .summary-table,
+    .detail-table {
+        font-size: 10px;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: white;
+    }
+
+    .section {
+        page-break-inside: avoid;
+    }
+
+    .employee-info {
+        page-break-inside: avoid;
+    }
+}
+
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
+@media print and (orientation: portrait) {
+    .container {
+        width: 210mm;
+    }
+}
+
+@media print and (orientation: landscape) {
+    .container {
+        width: 297mm;
+    }
+}

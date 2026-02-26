@@ -1,0 +1,396 @@
+/* Kustomisasi Header Card */
+/* .section-header-leave {
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 3px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.section-header-leave h1 {
+    color: #000000;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 1rem 1rem 0.5rem 1rem;
+} */
+
+
+/* main */
+.card-header-leave {
+    display: flex;
+    justify-content: center;
+    color: #ffffff;
+    background-color: #d51c48;
+    border-radius: 5px 5px 0 0;
+}
+
+.card-header-leave h4 {
+    font-size: 18px;
+    padding: 1rem 0 0.5rem 0;
+}
+
+.card-leave {
+    background-color: #ffffff;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Kustomisasi Badge Sisa Cuti */
+.sub-head-leave {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* align-items: center; */
+    /* width: 100%; */
+    margin-bottom: 2rem;
+}
+
+.title-lead {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #d51c48;
+    padding-left: 20px;
+    margin-bottom: 0.5rem;
+}
+
+.sisa-cuti-badge {
+    background-color: var(--primary-color-custom);
+    color: #d51c48;
+    padding: 8px 12px 8px 3px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.sisa-cuti-badge .badge-number {
+    background-color: #d51c48;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin: 0 10px;
+    font-size: 18px;
+}
+
+/* radio button */
+.card-body-leave {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+}
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 16px;
+}
+.radio-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.radio-item span {
+    color: #d51c48;
+}
+.radio-item input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #d51c48;
+  border-radius: 50%;
+  position: relative;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+}
+.radio-item input[type="radio"]:checked::before {
+  content: "";
+  position: absolute;
+  top: 4.3px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  background-color: #00ff2a;
+  border-radius: 50%;
+}
+.radio-label {
+  font-size: 14px;
+  color: #333;
+}
+.radio-item input[type="radio"]:focus {
+  outline: 2px solid #d51c48;
+  /* outline-offset: 2px; */
+}
+
+
+.form-group {
+    color: #d51c48;
+    font-weight: 600;
+}
+
+.form-group label {
+    color: #d51c48;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.leave-long {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    gap: 2rem;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.form-leave-date {
+    display: flex;
+    gap: 2rem;
+}
+
+.form-leave-date input[type="date"] {
+    width: 230px;
+    padding: 10px 12px;
+    border: 1px solid #d51c48;
+    border-radius: 4px;
+    font-family: Poppins, sans-serif;
+    font-size: 12px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+}
+
+.form-leave-date input[type="date"]:focus {
+    border-color: #d51c48;
+    box-shadow: 0 0 6px rgba(46, 139, 87, 0.4);
+    outline: none;
+}
+
+
+
+
+
+/* leave histories */
+/*
+ * Custom CSS for a Neater Leave History Table
+ */
+
+/* Main Table Styling */
+/* .title-leave-histories {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+} */
+
+/* .title-lead-riwayat {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #d51c48;
+} */
+
+/* filter */
+.per-page-filter {
+    display: flex;
+    align-items: center;
+    font-family: sans-serif;
+    font-size: 12px;
+    margin-top: -5px;
+    gap: 6px;
+}
+
+.per-page-filter select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background: #f3f3f3
+        url("data:image/svg+xml;utf8,<svg fill='gray' height='12' viewBox='0 0 24 24' width='12' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")
+        no-repeat right 8px center;
+    background-size: 12px;
+    padding: 6px 28px 6px 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.per-page-filter select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #d1d5db;
+}
+
+/* main */
+.header-histories {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem 1rem 1rem;
+    color: #d51c48;
+    border-bottom: 3px solid #d51c48;
+}
+.header-histories h4 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.table-riwayat {
+    background-color: #fff;
+}
+
+.table-riwayat td,
+.table-riwayat th {
+    vertical-align: middle !important;
+    padding: 12px 15px;
+}
+
+.table-riwayat thead {
+    background-color: #efefef;
+    color: #000;
+    font-weight: 800;
+}
+
+.table-riwayat thead th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.table-riwayat thead th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.table-riwayat tbody tr {
+    border-bottom: 1px solid #6c757d;
+}
+
+/* Detail Column Styling */
+.detail-item {
+    display: flex;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.detail-item span b {
+    color: #34395e;
+}
+
+.detail-label-cuti {
+    font-weight: 500;
+    color: #6c757d;
+    width: 90px;
+    flex-shrink: 0;
+}
+
+/* Status Column Styling */
+.status-wrapper {
+    margin-bottom: 10px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 500;
+    /* border: 1px solid #C8C8C8; */
+}
+
+.status-item .badge {
+    font-size: 12px;
+    padding: 5px 10px;
+    width: 85px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+/* Garis Pemisah di Kolom Status */
+.status-separator {
+    border-top: 1px solid #e3e6f0;
+    margin-top: 10px;
+}
+
+
+
+/* Action Column Button Styling */
+/* .table .btn {
+    box-shadow: none !important;
+    font-weight: 500;
+} */
+
+.leave-detail h4 {
+    font-size: 14px;
+    margin: 0;
+}
+.leave-detail p {
+    font-size: 14px;
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.space-line {
+    height: 40px;
+    width: 2px;
+    background-color: #6c757d;
+    padding: 0;
+}
+.inner-table tbody {
+    margin: 0;
+}
+
+/* .leave-histories-button {
+    gap: 1rem;
+}
+.edit-leave {
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    /* padding: 1rem 2rem; */
+/* }
+.delete-leave {
+    border-radius: 20px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}  */
+
+
+
+/* approval details */
+.approval-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.approval-details label {
+    width: 12rem;
+}
+.approval-long {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
+}
+.approval-long i {
+    display: flex;
+    align-items: center;
+}
+
+
+
+input[type="radio"] {
+    accent-color: #d51c48;
+}
+
+
+.border-custom {
+    border: solid 1px #e6e6e6;
+}

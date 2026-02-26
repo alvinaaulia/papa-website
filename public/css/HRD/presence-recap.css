@@ -1,0 +1,86 @@
+.presence-recap-form-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: flex-end;
+}
+
+.presence-recap-form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.presence-recap-label {
+    color: #d51c48;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.presence-recap-action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.presence-recap-hrd-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #d51c48;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.presence-recap-hrd-subtitle {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+}
+
+.btn-filter {
+    background-color: #d51c48 !important;
+    border-color: #d51c48 !important;
+    border-radius: 20px !important;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    min-width: 8rem !important;
+}
+
+.btn-filter:hover {
+    background-color: #ff557d !important;
+    border-color: #ff557d !important;
+    color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+    .presence-recap-container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .presence-recap-form-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .presence-recap-btn {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .presence-recap-action {
+        justify-content: center;
+    }
+
+    .presence-recap-title,
+    .presence-recap-lead {
+        padding-left: 15px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .presence-recap-form-row {
+        gap: 1rem;
+    }
+}

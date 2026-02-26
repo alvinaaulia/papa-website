@@ -1,0 +1,268 @@
+.section-title-contract {
+    font-size: 1.4rem;
+    color: #d51c48;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    padding-left: 20px;
+}
+
+.section-lead-contract {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    padding-left: 20px;
+}
+
+.btn-detail {
+    padding: 0.2rem 0.8rem;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-approve {
+    padding: 0.2rem 0.7rem;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-revisi {
+    padding: 0.2rem 1rem;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+
+.modal-sm {
+    max-width: 400px;
+}
+
+.modal-content {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    border-bottom: none;
+    padding: 16px 16px 0 16px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.icon-container {
+    font-size: 20px;
+    margin-right: 8px;
+    margin-top: -2px;
+}
+
+.icon-container .fas {
+    font-size: 1.4rem;
+}
+
+.close {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1;
+    color: #999999;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    padding: 4px;
+    margin: -4px -4px -4px auto;
+}
+
+.close:hover {
+    color: #666666;
+    opacity: 1;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+.close:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.modal-body {
+    padding: 0 16px 16px 16px;
+    text-align: center;
+}
+
+.modal-title {
+    font-size: 16px;
+    color: #000000;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+
+.compact-text {
+    font-size: 14px;
+    color: #666666;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.badge-success-employment {
+    background-color: #D1FAE5 !important;
+    color: #047857 !important;
+}
+
+.badge-warning-employment {
+    background-color: #FEF3C7 !important;
+    color: #D97706 !important;
+}
+
+.badge-danger-employment {
+    background-color: #FEE2E2 !important;
+    color: #B91C1C !important;
+}
+
+.d-flex.gap-2 {
+    gap: 8px !important;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+
+.modal-body .mb-3 {
+    margin-bottom: 16px !important;
+}
+
+.modal-body .mb-4 {
+    margin-bottom: 20px !important;
+}
+
+.d-flex.gap-3 {
+    gap: 12px !important;
+}
+
+.px-3 {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;
+    }
+
+    .card-header-form .input-group {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .section-header {
+        text-align: center;
+    }
+
+    .section-header-breadcrumb {
+        justify-content: center;
+    }
+
+    .modal-sm {
+        max-width: 90%;
+        margin: 1rem auto;
+    }
+
+    .modal-body {
+        padding: 0 12px 12px 12px;
+    }
+
+    .modal-title {
+        font-size: 15px;
+    }
+
+    .compact-text {
+        font-size: 20px;
+        line-height: 1.3;
+    }
+
+    .btn-sm {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .icon-container .fas {
+        font-size: 1.2rem;
+    }
+}
+
+/* Existing styles tetap dipertahankan */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    min-height: 100vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-heading {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.nav-link {
+    color: #495057;
+    border-radius: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: #e9ecef;
+    color: #d51c48;
+}
+
+.section-header {
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.section-header h1 {
+    font-size: 1.75rem;
+    color: #5a5c69;
+    margin-bottom: 0;
+}
+
+.section-header-breadcrumb {
+    font-size: 0.9rem;
+}
+
+.breadcrumb-item.active {
+    color: #6c757d;
+}
+
+.badge-warning-details {
+    background-color: #f6c23e;
+    color: #fff;
+}
+
+.badge-info-details {
+    background-color: #36b9cc;
+    color: #fff;
+}
+
+.badge-success-details {
+    background-color: #1cc88a;
+    color: #fff;
+}
+
+.btn-outline-danger {
+    border-color: #d51c48;
+    color: #d51c48;
+}
+
+.btn-outline-danger:hover {
+    background-color: #d51c48;
+    color: white;
+}

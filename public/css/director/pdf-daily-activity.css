@@ -1,0 +1,314 @@
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.report-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.report-header {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.report-title {
+    color: #d51c48;
+    font-weight: 800;
+    font-size: 25px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.company-name {
+    color: #333;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.company-address {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 0;
+    line-height: 1.4;
+}
+
+.student-info-container {
+    margin: 25px 0;
+    padding: 0;
+}
+
+.info-row-flex {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 40px;
+}
+
+.info-item-flex {
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.info-label-custom {
+    font-weight: 600;
+    color: #333;
+    min-width: 150px;
+    text-align: left;
+}
+
+.info-separator-custom {
+    color: #333;
+    margin: 0 8px;
+    min-width: 10px;
+}
+
+.divider-custom {
+    border-bottom: 2px solid #d51c48;
+    margin: 25px 0;
+    width: 100%;
+}
+
+.month-title-custom {
+    color: #333;
+    font-weight: 700;
+    font-size: 18px;
+    margin-left: 78%;
+}
+
+.table-responsive-custom {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 30px;
+}
+
+.report-table-custom {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    font-size: 14px;
+    background: white;
+}
+
+.report-table-custom th {
+    background: #d51c48;
+    color: white;
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.report-table-custom td {
+    padding: 12px 10px;
+    text-align: left;
+    border: 1px solid #dee2e6;
+    vertical-align: top;
+}
+
+.report-table-custom tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.report-table-custom tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Kolom No */
+.report-table-custom td:nth-child(1) {
+    text-align: center;
+    width: 8%;
+    font-weight: 600;
+}
+
+/* Kolom Tanggal */
+.report-table-custom td:nth-child(2) {
+    text-align: center;
+    width: 12%;
+    font-weight: 500;
+}
+
+/* Kolom Hasil Kegiatan */
+.report-table-custom td:nth-child(3) {
+    width: 80%;
+    text-align: left;
+}
+
+.report-footer-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 50px;
+    padding-top: 25px;
+    border-top: 2px solid #dee2e6;
+}
+
+.pagination-info-custom {
+    flex: 0 0 auto;
+    font-weight: 600;
+    color: #333;
+    padding: 10px 0;
+}
+
+.signature-section-custom {
+    flex: 0 0 auto;
+    text-align: right;
+}
+
+.tanggal-info-custom {
+    text-align: left;
+}
+
+.tanggal-info-custom p {
+    margin-bottom: 8px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.signature-space-custom {
+    height: 70px;
+    margin: 15px 0;
+    border-bottom: 1px solid #333;
+}
+
+.e-signature-note-custom {
+    color: #666;
+    font-size: 11px;
+    font-style: italic;
+    margin-top: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .report-container {
+        padding: 20px 15px;
+    }
+
+    .report-title {
+        font-size: 22px;
+    }
+
+    .info-row-flex {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .info-item-flex {
+        width: 100%;
+    }
+
+    .report-table-custom {
+        font-size: 12px;
+    }
+
+    .report-table-custom th,
+    .report-table-custom td {
+        padding: 10px 6px;
+    }
+
+    .report-footer-custom {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 50px;
+        padding-top: 25px;
+        border-top: 2px solid #dee2e6;
+    }
+
+    .pagination-info-custom {
+        flex: 0 0 auto;
+        font-weight: 600;
+        color: #333;
+        padding: 10px 0;
+    }
+
+    .signature-section-custom {
+        flex: 0 0 auto;
+        text-align: right;
+        margin-left: auto;
+    }
+
+    .tanggal-info-custom {
+        text-align: right;
+        min-width: 250px;
+    }
+
+    .tanggal-info-custom p {
+        margin-bottom: 8px;
+        color: #333;
+        line-height: 1.4;
+        text-align: right;
+    }
+
+    .signature-space-custom {
+        height: 70px;
+        margin: 15px 0;
+        border-bottom: 1px solid #333;
+        width: 100%;
+    }
+
+    .e-signature-note-custom {
+        color: #666;
+        font-size: 11px;
+        font-style: italic;
+        margin-top: 8px;
+        text-align: right;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        font-size: 12px;
+    }
+
+    .report-container {
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .report-table-custom th {
+        background: #d51c48 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .month-title-custom {
+        color: #333;
+        font-weight: 700;
+        font-size: 15px;
+        margin-left: 65%;
+    }
+
+    .signature-section-custom {
+        float: right;
+        margin-left: auto;
+    }
+
+    .tanggal-info-custom {
+        text-align: right !important;
+    }
+}
