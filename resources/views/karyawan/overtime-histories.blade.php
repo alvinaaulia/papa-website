@@ -46,100 +46,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="overtime-data">
-                                                <td class="text-center">1</td>
-                                                <td class="text-center">04/09/2025</td>
-                                                <td class="text-center">17.00 s.d 22.00 WIB</td>
-                                                <td class="text-center">5 Jam</td>
-                                                <td>
-                                                    <div class="space-td">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at sem
-                                                        vulputate fringilla non nec justo.
-                                                    </div>
+                                            <tr class="text-center overtime-data">
+                                                <td colspan="8" class="py-4 text-muted">
+                                                    Memuat data lembur...
                                                 </td>
-                                                <td class="text-center">
-                                                    <a href="#" class="evidence" style="text-decoration: none"
-                                                        onclick="openFotoModal()"> Buka
-                                                        foto </a>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="badge badge-pill badge-secondary badge-custom" data-toggle="modal" data-target="#trackingStatus">Draft</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="overtime-action space-td">
-                                                        <a href="{{ route('edit-overtime') }}" class="overtime-action"
-                                                            style="text-decoration: none;">
-                                                            <button type="button" class="btn btn-secondary">Edit</button>
-                                                        </a>
-                                                        <button type="button" class="btn btn-danger"
-                                                            onclick="openDeleteModal()">Hapus</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="overtime-data">
-                                                <td class="text-center">2</td>
-                                                <td class="text-center">04/09/2025</td>
-                                                <td class="text-center">17.00 s.d 22.00 WIB</td>
-                                                <td class="text-center">5 Jam</td>
-                                                <td>
-                                                    <div class="space-td">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at sem
-                                                        vulputate fringilla non nec justo.
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <a href="#" class="evidence" style="text-decoration: none"
-                                                        onclick="openFotoModal()">Buka
-                                                        foto</a>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span
-                                                        class="badge badge-pill badge-warning badge-custom" data-toggle="modal" data-target="#trackingStatus1">Menunggu</span>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr class="overtime-data">
-                                                <td class="text-center">3</td>
-                                                <td class="text-center">04/09/2025</td>
-                                                <td class="text-center">17.00 s.d 22.00 WIB</td>
-                                                <td class="text-center">5 Jam</td>
-                                                <td>
-                                                    <div class="space-td">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at sem
-                                                        vulputate fringilla non nec justo.
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <a href="#" class="evidence" style="text-decoration: none"
-                                                        onclick="openFotoModal()">Buka
-                                                        foto</a>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span
-                                                        class="badge badge-pill badge-success badge-custom" data-toggle="modal" data-target="#trackingStatus2">Disetujui</span>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr class="overtime-data">
-                                                <td class="text-center">4</td>
-                                                <td class="text-center">04/09/2025</td>
-                                                <td class="text-center">17.00 s.d 22.00 WIB</td>
-                                                <td class="text-center">5 Jam</td>
-                                                <td>
-                                                    <div class="space-td">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at sem
-                                                        vulputate fringilla non nec justo.
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <a href="#" class="evidence" style="text-decoration: none"
-                                                        onclick="openFotoModal()">Buka
-                                                        foto</a>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="badge badge-pill badge-danger badge-custom" data-toggle="modal" data-target="#trackingStatus3">Ditolak</span>
-                                                </td>
-                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -471,4 +381,5 @@
             }
         }
     </script>
+    <script src="{{ asset('js/overtime/employee/history.js') }}"></script>
 @endpush

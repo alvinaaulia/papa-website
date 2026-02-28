@@ -129,6 +129,11 @@
     </div>
 @endsection
 
+@push('customStyle')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @push('customScript')
     <script src="{{ asset('assets/js/page/forms-advanced-forms.js') }}"></script>
+    <script src="{{ asset('js/overtime/employee/form.js') }}"></script>
 @endpush

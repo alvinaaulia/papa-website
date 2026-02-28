@@ -31,18 +31,7 @@
 
                 <div class="form-actions">
                     <a href="{{ route('forgot-password') }}" class="forgot-password">Lupa Password?</a>
-                    <div class="dropdown">
-                        <button class="btn-login" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Login
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ route('dashboard-employee') }}">Login Karyawan</a>
-                            <a class="dropdown-item" href="{{ route('dashboard-PM') }}">Login PM</a>
-                            <a class="dropdown-item" href="{{ route('dashboard-hrd') }}">Login HRD</a>
-                            <a class="dropdown-item" href="{{ route('dashboard-director') }}">Login Direktur</a>
-                        </div>
-                    </div>
+                    <button class="btn-login" type="submit" id="login-button">Login</button>
                 </div>
             </form>
         </div>
@@ -55,3 +44,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/page/auth-login.js') }}"></script>
+@endpush

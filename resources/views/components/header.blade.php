@@ -59,11 +59,11 @@
                 <div class="dropdown-title">Logged in 5 min ago</div>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item has-icon text-danger"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
+                    onclick="event.preventDefault(); window.logoutViaApi && window.logoutViaApi(); return false;">
 
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
-                <form id="logout-form" action="#" method="POST">
+                <form id="logout-form" action="#" method="POST" style="display: none;">
                     @csrf
                 </form>
             </div>

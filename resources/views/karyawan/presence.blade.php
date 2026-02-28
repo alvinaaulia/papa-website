@@ -9,10 +9,27 @@
     <link rel="stylesheet" href="{{ asset('library/bootstrap-daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/presence.css') }}">
+    <style>
+        .spinner-border {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 @endpush
 
 @section('main')
-
     <div class="main-content">
         <section class="section">
             <div class="section-header">
@@ -22,7 +39,6 @@
                     <div class="breadcrumb-item">Absensi</div>
                 </div>
             </div>
-
             <div class="section-body">
                 <div class="row align-items-center">
                     <div class="col-md-6">
@@ -38,18 +54,20 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <h4>Tabel Absen Masuk & Pulang</h4>
                                 <div class="card-header-form">
-                                    <form>
+                                    <form id="searchForm">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search">
+                                            <input type="text" class="form-control" placeholder="Search"
+                                                id="searchInput">
                                             <div class="input-group-btn">
-                                                <button class="btn btn-filter"><i class="fas fa-search"></i></button>
+                                                <button class="btn btn-filter" type="submit">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </form>
@@ -73,48 +91,16 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @for ($i = 1; $i <= 10; $i++)
-                                                <tr>
-                                                    <td class="text-dark text-center">{{ $i }}</td>
-                                                    <td class="text-dark text-center">01/10/2025</td>
-                                                    <td class="text-dark text-center">07:49:32</td>
-                                                    <td class="text-dark text-center">Belum Absen Pulang</td>
-                                                    <td class="text-dark text-center">-</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm-absen btn-info-custom"
-                                                            data-toggle="modal" data-target="#OpenFotoModal">
-                                                            Buka Foto
-                                                        </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm-absen btn-info-custom"
-                                                            data-toggle="modal" data-target="#OpenFotoModal">
-                                                            Buka Foto
-                                                        </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <div class="text-dark">Hadir</div>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <div class="dropdown show">
-                                                            <a class="btn btn-primary dropdown-toggle" href="#"
-                                                                role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
-                                                                Detail
-                                                            </a>
-
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="fas fa-arrow-right"></i> Lihat Lokasi Masuk
-                                                                </a>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="fas fa-arrow-left"></i> Lihat Lokasi Pulang
-                                                                </a>
-                                                            </div>
+                                            <tr>
+                                                <td colspan="9" class="text-center py-4">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                            @endfor
+                                                        <span class="ms-2">Memuat data absensi...</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -122,19 +108,6 @@
                             <div class="card-footer text-center">
                                 <nav class="d-inline-block">
                                     <ul class="pagination mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1"><i
-                                                    class="fas fa-chevron-left"></i></a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1 <span
-                                                    class="sr-only">(current)</span></a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                                        </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -145,7 +118,6 @@
         </section>
     </div>
 
-    <!-- Modal Filter -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -175,10 +147,11 @@
                     </form>
                 </div>
                 <div class="modal-footer border-0 justify-content-between">
-                    <button type="button" class="btn btn-danger border" style="width: 120px">
+                    <button type="button" class="btn btn-danger border" style="width: 120px" data-dismiss="modal">
                         <i class="fas fa-xmark"></i> Batal
                     </button>
-                    <a href="{{ route('pdf-presence-karyawan') }}" class="btn btn-info me-2" target="_blank" style="width: 120px">
+                    <a href="{{ route('pdf-presence-karyawan') }}" class="btn btn-info me-2" target="_blank"
+                        style="width: 120px">
                         <i class="fas fa-print"></i> Cetak
                     </a>
                     <button type="button" class="btn btn-success" id="applyFilterModal" style="width: 120px">
@@ -200,12 +173,10 @@
                     </button>
                 </div>
                 <div class="modal-body" id="modal-body">
-                    ...
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('scripts')
@@ -219,7 +190,11 @@
     <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
 
-    <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/index-0.js') }}"></script>
-    <script src="{{ asset('js/page/absensi.js') }}"></script>
+    <script src="{{ asset('js/presence/employee/presence.js') }}"></script>
+
+    <script>
+        document.getElementById('searchForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+        });
+    </script>
 @endpush

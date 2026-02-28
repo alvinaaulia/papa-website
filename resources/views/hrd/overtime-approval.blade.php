@@ -2,6 +2,10 @@
 
 @section('title', 'Persetujuan Lembur')
 
+@push('style')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @section('main')
     <div class="main-content">
         <section class="section">
@@ -67,75 +71,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="overtime-data">
-                                                <td>1</td>
-                                                <td style="text-align: center">04/09/2025</td>
-                                                <td style="text-align: center">Anonymous</td>
-                                                <td>
-                                                    <div class="space-td">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at sem
-                                                        vulputate fringilla non nec justo.
-                                                    </div>
+                                            <tr class="text-center overtime-data">
+                                                <td colspan="7" class="py-4 text-muted">
+                                                    Memuat data pengajuan lembur...
                                                 </td>
-                                                <td class="text-center">
-                                                    <a href="#" class="evidence" style="text-decoration: none"
-                                                        onclick="openFotoModal()">Buka
-                                                        Lampiran</a>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="badge badge-pill badge-warning badge-custom"
-                                                        data-toggle="modal" data-target="#trackingStatus1">Menunggu</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="overtime-action space-td">
-                                                        <button type="button" class="btn btn-success"
-                                                            onclick="openApprovedModal()">Setujui</button>
-                                                        <button type="button" class="btn btn-danger"
-                                                            onclick="openSuspendModal()">Tolak</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="overtime-data">
-                                                <td>2</td>
-                                                <td style="text-align: center">04/09/2025</td>
-                                                <td style="text-align: center">Anonymous</td>
-                                                <td>
-                                                    <div class="space-td">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at sem
-                                                        vulputate fringilla non nec justo.
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <a href="#" class="evidence" style="text-decoration: none"
-                                                        onclick="openFotoModal()">Buka
-                                                        Lampiran</a>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="badge badge-pill badge-success badge-custom"
-                                                        data-toggle="modal" data-target="#trackingStatus2">Disetujui</span>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr class="overtime-data">
-                                                <td>3</td>
-                                                <td style="text-align: center">04/09/2025</td>
-                                                <td style="text-align: center">Anonymous</td>
-                                                <td>
-                                                    <div class="space-td">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at sem
-                                                        vulputate fringilla non nec justo.
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <a href="#" class="evidence" style="text-decoration: none"
-                                                        onclick="openFotoModal()">Buka
-                                                        Lampiran</a>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="badge badge-pill badge-danger badge-custom"
-                                                        data-toggle="modal" data-target="#trackingStatus3">Ditolak</span>
-                                                </td>
-                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -455,10 +394,6 @@
     </div>
 @endsection
 
-@push('customScript')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
-@endpush
-
 @push('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -547,4 +482,5 @@
             autoUpdateInput: false,
         });
     </script>
+    <script src="{{ asset('js/overtime/hrd/approval.js') }}"></script>
 @endpush

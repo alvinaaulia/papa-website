@@ -1,7 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\DataMaster\MasterPositionController;
+use App\Http\Controllers\Api\DailyActivityController;
+use App\Http\Controllers\Api\DailyActivityProjectController;
+use App\Http\Controllers\Api\DataMaster\ContractController;
 use App\Http\Controllers\Api\DataMaster\UserController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DataMaster\MasterPositionController;
 use App\Http\Controllers\Api\DataMaster\SalaryController;
 use App\Http\Controllers\Api\DataMaster\MasterSalaryController;
 use App\Http\Controllers\Api\DataMaster\PositionController;
@@ -21,8 +25,86 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/auth/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::get('/auth/me', [AuthController::class, 'me']);
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+    require __DIR__ . '/api/overtime.php';
+
+    require __DIR__ . '/api/leave.php';
+
+    Route::get('daily-activities-director', [\App\Http\Controllers\Api\DataMaster\ProjectController::class, 'dailyActivitiesDirector']);
+    
+    // HRD daily activities
+    Route::get('list-projects-hrd', [\App\Http\Controllers\Api\DataMaster\ProjectController::class, 'getDailyActivities']);
+    Route::get('detail-projects-hrd/{projectId}', [\App\Http\Controllers\Api\DataMaster\ProjectController::class, 'DetailDailyActivities']);
+    
+    // hrd
+    Route::get('contracts', [ContractController::class, 'index']);
+    Route::post('contracts', [ContractController::class, 'store']);
+    
+    // employee/hrd/direktur
+    Route::get('contracts/{contractId}', [ContractController::class, 'show']);
+    
+    // contract direktur
+    Route::get('contracts/approval-list', [ContractController::class, 'approvalList']);
+    Route::post('/employee/contracts/{contractId}/approve-director', [ContractController::class, 'approvalContractDirector']);
+    Route::post('/pm/contracts/{contractId}/approve-director', [ContractController::class, 'approvalContractDirector']);
+    
+    // contract employee
+    Route::get('/employee/contracts', [ContractController::class, 'employeeContractList']);
+    Route::get('/employee/contracts/{contractId}', [ContractController::class, 'employeeContractDetail']);
+    Route::post('/employee/contracts/{contractId}/approve-employee', [ContractController::class, 'approvalContract']);
+    
+    // contract pm
+    Route::get('/pm/contracts', [ContractController::class, 'ContractListPM']);
+    Route::post('/pm/contracts/{contractId}/approve-pm', [ContractController::class, 'approvalContractPM']);
+    Route::get('/pm/contracts/{contractId}', [ContractController::class, 'ContractDetailPM']);
+    
+    
+    // hrd
+    Route::prefix('hrd')->group(function () {
+        Route::get('/contracts', [ContractController::class, 'index']);
+        Route::get('/contracts/filter', [ContractController::class, 'filterByStatus']);
+        Route::get('/contracts/{contractId}', [ContractController::class, 'show']);
+        Route::post('/contracts', [ContractController::class, 'store']);
+        Route::put('/contracts/{contractId}', [ContractController::class, 'update']);
+    });
+    
+    //employee daily activities
+    Route::get('employee/daily-activities', [\App\Http\Controllers\Api\DailyActivityController::class, 'EmployeeListDaily']);
+    Route::get('employee/daily-activities/{id}', [\App\Http\Controllers\Api\DailyActivityController::class, 'EmployeeDailyDetail']);
+    
+    // pm
+    Route::get('daily-activities-pm', [\App\Http\Controllers\Api\DailyActivityController::class, 'index']);
+    Route::post('daily-activities-pm', [\App\Http\Controllers\Api\DailyActivityController::class, 'store']);
+    Route::get('daily-activities-pm/{id}', [\App\Http\Controllers\Api\DailyActivityController::class, 'show']);
+    
+    // pm
+    Route::get('tasks', [\App\Http\Controllers\Api\TaskController::class, 'index']);
+    Route::post('tasks', [\App\Http\Controllers\Api\TaskController::class, 'store']);
+    
+    //direktur daily activity PDF
+    Route::get('/generate-pdf', [DailyActivityProjectController::class, 'generatePDF']);
+    Route::get('/report/data', [DailyActivityProjectController::class, 'getReportData']);
+    
+    // mengambil route api presence di folder api
+    require __DIR__ . '/api/presence.php';
+    
+    // mengambil route api project di folder api
+    require __DIR__ . '/api/project.php';
+    
+    // mengambil route api activity-type di folder api
+    require __DIR__ . '/api/data-master/activity-type.php';
+    
+    // mengambil route api user di folder api/DataMaster
+    require __DIR__ . '/api/data-master/user.php';
 });
 
 Route::get('employees', [UserController::class, 'index']);

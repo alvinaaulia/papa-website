@@ -15,17 +15,23 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('login-page', ['type_menu' => 'login']);
-// })->name('login-page');
+
 
 Route::get('/landing-page', function () {
     return view('landingpage');
 });
 
-// Route::get('/login', action: function () {
-//     return view('login-page', ['type_menu' => 'login']);
-// })->name('login-page');
+Route::get('/', function () {
+    return view('login-page', ['type_menu' => 'login']);
+})->name('login-page');
+
+Route::get('/landing-page', function () {
+    return view('landingpage');
+});
+
+Route::get('/login', action: function () {
+    return view('login-page', ['type_menu' => 'login']);
+})->name('login-page');
 
 /* karyawan */
 Route::prefix('karyawan')->group(function () {
@@ -138,7 +144,7 @@ Route::prefix('karyawan')->group(function () {
 
 /* pm */
 Route::prefix('pm')->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard-PM', function () {
         return view('dashboard-PM', ['type_menu' => 'dashboard-PM']);
     })->name('dashboard-PM');
 

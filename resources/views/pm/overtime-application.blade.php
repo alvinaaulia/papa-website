@@ -128,7 +128,11 @@
     </div>
 @endsection
 
+@push('customStyle')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @push('customScript')
     <script src="{{ asset('assets/js/page/forms-advanced-forms.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
+    <script src="{{ asset('js/overtime/pm/form.js') }}"></script>
 @endpush

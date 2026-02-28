@@ -357,10 +357,6 @@
     </div>
 @endsection
 
-@push('customScript')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
-@endpush
-
 @push('scripts')
     <script>
         function openDeleteModal() {

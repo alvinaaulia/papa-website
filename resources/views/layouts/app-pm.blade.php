@@ -98,6 +98,9 @@
     @stack('customScript')
     @stack('pickerScript')
 
+    <!-- Auth API (token & fetchWithAuth) -->
+    <script src="{{ asset('js/auth-api.js') }}"></script>
+
     <!-- Template JS File -->
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>

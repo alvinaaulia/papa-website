@@ -60,6 +60,24 @@
         .select2-selection__choice {
             padding: 0 20px !important;
         }
+
+        /* Loading spinner */
+        .spinner-border {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
     </style>
 @endpush
 
@@ -115,97 +133,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @php $no = 1; @endphp
-                                            @for ($i = 1; $i <= 3; $i++)
-                                                <tr>
-                                                    <td class="text-dark text-center">{{ $no++ }}</td>
-                                                    <td class="text-dark text-center">06/10/2025</td>
-                                                    <td class="text-dark text-center">Adinda</td>
-                                                    <td class="text-dark text-center">07:48:32</td>
-                                                    <td class="text-dark text-center">Belum Absen Pulang</td>
-                                                    <td class="text-dark text-center">-</td>
-                                                    <td class="text-center"><button type="button"
-                                                            class="btn btn-sm-absen btn-info-custom" data-toggle="modal"
-                                                            data-target="#OpenFotoModal">
-                                                            Buka Foto
-                                                        </button>
-                                                    <td class="text-center"><button type="button"
-                                                            class="btn btn-sm-absen btn-info-custom" data-toggle="modal"
-                                                            data-target="#OpenFotoModal">
-                                                            Buka Foto
-                                                        </button>
-                                                    <td class="text-dark text-center">
-                                                        <div
-                                                            style="width: 50px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 20px;">
-                                                            Hadir
+                                            <!-- Data akan di-load via JavaScript -->
+                                            <tr>
+                                                <td colspan="10" class="text-center py-4">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
                                                         </div>
-                                                    </td>
-
-                                                    <td class="text-center">
-                                                        <div class="dropdown show">
-                                                            <a class="btn btn-primary dropdown-toggle" href="#"
-                                                                role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
-                                                                Detail
-                                                            </a>
-
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="fas fa-arrow-right"></i> Lihat Lokasi Masuk
-                                                                </a>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="fas fa-arrow-left"></i> Lihat Lokasi Pulang
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-dark text-center">{{ $no++ }}</td>
-                                                    <td class="text-dark text-center">06/10/2025</td>
-                                                    <td class="text-dark text-center">Alvina</td>
-                                                    <td class="text-dark text-center">07:50:32</td>
-                                                    <td class="text-dark text-center">Sudah Absen</td>
-                                                    <td class="text-dark text-center">-</td>
-                                                    <td class="text-center"><button type="button"
-                                                            class="btn btn-sm-absen btn-info-custom" data-toggle="modal"
-                                                            data-target="#OpenFotoModal">
-                                                            Buka Foto
-                                                        </button>
-                                                    <td class="text-center"><button type="button"
-                                                            class="btn btn-sm-absen btn-info-custom" data-toggle="modal"
-                                                            data-target="#OpenFotoModal">
-                                                            Buka Foto
-                                                        </button>
-                                                    <td class="text-dark text-center">
-                                                        <div
-                                                            style="width: 50px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 20px;">
-                                                            Hadir
-                                                        </div>
-                                                    </td>
-
-                                                    <td class="text-center">
-                                                        <div class="dropdown show">
-                                                            <a class="btn btn-primary dropdown-toggle" href="#"
-                                                                role="button" id="dropdownMenuLink"
-                                                                data-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false">
-                                                                Detail
-                                                            </a>
-
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="fas fa-arrow-right"></i> Lihat Lokasi Masuk
-                                                                </a>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="fas fa-arrow-left"></i> Lihat Lokasi Pulang
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endfor
+                                                        <span class="ms-2">Memuat data absensi...</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -266,6 +204,7 @@
                                 <label for="presenceEmployee" class="form-label">Nama Karyawan</label>
                                 <select class="form-control custom-select select2" id="presenceEmployee"
                                     multiple="multiple" style="border: 1.5px solid #D51C48;">
+                                    <!-- Options akan di-load via JavaScript jika perlu -->
                                     <option value="development">Karyawan1</option>
                                     <option value="design">Karyawan2</option>
                                     <option value="testing">Karyawan3</option>
@@ -292,35 +231,7 @@
         </div>
     </div>
 
-    <!-- Modal Cetak PDF -->
-    <div class="modal fade" id="modalPrint" tabindex="-1" role="dialog" aria-labelledby="modalPrintTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header border-0 align-items-start">
-                    <div class="icon-container">
-                        <i class="fas fa-check-circle text-success"></i>
-                    </div>
-                    <button type="button" class="close ml-auto" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-left px-4 pb-3">
-                    <h6 class="modal-title fw-bold mb-3">Cetak Laporan Absensi</h6>
-                    <p class="text-muted small mb-4 compact-text">
-                        Apakah anda yakin untuk mencetaknya?
-                    </p>
-                    <div class="d-flex gap-2 w-100">
-                        <button type="button" class="btn btn-outline-dark btn-sm flex-fill py-2"
-                            data-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-primary btn-sm flex-fill py-2 ml-2"
-                            id="confirmPrint">Yakin</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Modal Foto -->
     <div class="modal fade" id="OpenFotoModal" tabindex="-1" role="dialog" aria-labelledby="OpenFotoModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -332,7 +243,7 @@
                     </button>
                 </div>
                 <div class="modal-body" id="modal-body">
-                    ...
+                    <!-- Content akan diisi via JavaScript -->
                 </div>
             </div>
         </div>
@@ -340,9 +251,21 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('library/simpleweather/jquery.simpleWeather.min.js') }}"></script>
+    <script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script>
+    <script src="{{ asset('library/jqvmap/dist/jquery.vmap.min.js') }}"></script>
+    <script src="{{ asset('library/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
+    <script src="{{ asset('library/summernote/dist/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
+
+    <!-- Load JavaScript untuk presence data -->
+    {{-- Mengambil javascript dari presence.js --}}
+    <script src="{{ asset('js/presence/director/presence.js') }}"></script>
+
     <script>
         $(function() {
-
             $('#staticBackdrop').on('shown.bs.modal', function() {
                 $('#presenceEmployee').select2({
                     width: '100%',
@@ -357,12 +280,4 @@
             });
         });
     </script>
-    <script src="{{ asset('library/simpleweather/jquery.simpleWeather.min.js') }}"></script>
-    <script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script>
-    <script src="{{ asset('library/jqvmap/dist/jquery.vmap.min.js') }}"></script>
-    <script src="{{ asset('library/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
-    <script src="{{ asset('library/summernote/dist/summernote-bs4.min.js') }}"></script>
-    <script src="{{ asset('library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
-    <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
 @endpush
