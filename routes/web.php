@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('login-page', ['type_menu' => 'login']);
 // })->name('login-page');
 
-Route::get('/landing-page', function () {
+Route::get('/', function () {
     return view('landingpage');
 });
 

@@ -23,7 +23,7 @@
                     <h1 class="logo-text">PAPA</h1>
                 </div>
                 <div class="col-md-6 text-end">
-                    <a href="#" class="btn btn-outline-primary login-btn">Login</a>
+                    <a href="{{ route('login')}}" class="btn btn-outline-primary login-btn">Login</a>
                 </div>
             </div>
         </div>
