@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,15 +13,9 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-
-
-Route::get('/landing-page', function () {
-    return view('landingpage');
-});
-
-Route::get('/', function () {
-    return view('login-page', ['type_menu' => 'login']);
-})->name('login-page');
+// Route::get('/', function () {
+//     return view('login-page', ['type_menu' => 'login']);
+// })->name('login-page');
 
 Route::get('/landing-page', function () {
     return view('landingpage');
@@ -31,11 +23,11 @@ Route::get('/landing-page', function () {
 
 Route::get('/login', action: function () {
     return view('login-page', ['type_menu' => 'login']);
-})->name('login-page');
+})->name('login');
 
 /* karyawan */
-Route::prefix('karyawan')->group(function () {
-    Route::get('/dashboard-employee', function () {
+Route::prefix('karyawan')->middleware(['auth', 'role:karyawan'])->group(function () {
+    Route::get('/dashboard', function () {
         return view('dashboard-employee', ['type_menu' => 'dashboard-employee']);
     })->name('dashboard-employee');
 
@@ -143,8 +135,8 @@ Route::prefix('karyawan')->group(function () {
 
 
 /* pm */
-Route::prefix('pm')->group(function () {
-    Route::get('/dashboard-PM', function () {
+Route::prefix('pm')->middleware(['auth', 'role:pm'])->group(function () {
+    Route::get('/dashboard', function () {
         return view('dashboard-PM', ['type_menu' => 'dashboard-PM']);
     })->name('dashboard-PM');
 
@@ -281,8 +273,8 @@ Route::prefix('pm')->group(function () {
 
 
 /* Routing hrd */
-Route::prefix('hrd')->group(function () {
-    Route::get('/dashboard-hrd', function () {
+Route::prefix('hrd')->middleware(['auth', 'role:hrd'])->group(function () {
+    Route::get('/dashboard', function () {
         return view('dashboard-HRD', ['type_menu' => 'dashboard-hrd']);
     })->name('dashboard-hrd');
 
@@ -326,12 +318,8 @@ Route::prefix('hrd')->group(function () {
         return view('hrd/add-payslip', ['type_menu' => 'payslip']);
     })->name('add-payslip-hrd');
 
-    Route::get('/payslip-details', function (Request $request) {
-        $salaryId = $request->query('id');
-        return view('hrd/payslip-details', [
-            'type_menu' => 'payslip',
-            'salary_id' => $salaryId
-        ]);
+    Route::get('/payslip-details', function () {
+        return view('hrd/payslip-details', ['type_menu' => 'payslip']);
     })->name('payslip-details-hrd');
 
     Route::get('/edit-payslip', function () {
@@ -346,7 +334,7 @@ Route::prefix('hrd')->group(function () {
         return view('hrd/add-employees', ['type_menu' => 'data-employees']);
     })->name('add-employees-hrd');
 
-    Route::get('/employee-details', function () {
+    Route::get('/employee-details/{id}', function () {
         return view('hrd/employee-details', ['type_menu' => 'employee-details']);
     })->name('employee-details');
 
@@ -447,8 +435,8 @@ Route::prefix('hrd')->group(function () {
 
 
 /* Routing Direktur */
-Route::prefix('director')->group(function () {
-    Route::get('/dashboard-director', function () {
+Route::prefix('director')->middleware(['auth', 'role:direktur,director'])->group(function () {
+    Route::get('/dashboard', function () {
         return view('dashboard-director', ['type_menu' => 'dashboard-director']);
     })->name('dashboard-director');
 
@@ -498,15 +486,7 @@ Route::prefix('director')->group(function () {
     })->name('daily-activity-details');
 
     Route::get('/pdf-daily-activity-director', function () {
-        $from_date = request('from_date');
-        $end_date = request('end_date');
-
-        return view('direktur.pdf-daily-activity', [
-            'type_menu' => 'pdf-daily-activity-director',
-            'from_date' => $from_date,
-            'end_date' => $end_date,
-
-        ]);
+        return view('direktur.pdf-daily-activity');
     })->name('pdf-daily-activity-director');
 
 
@@ -598,62 +578,3 @@ Route::prefix('director')->group(function () {
         return view('direktur/master-document', ['type_menu' => 'data-master-document']);
     })->name('data-master-document');
 });
-
-
-
-
-// with auth
-Route::get('/login', action: function () {
-    return view('auth.login', ['type_menu' => 'login']);
-})->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-
-
-Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-    Route::get('/dashboard', function () {
-        $user = auth()->user();
-
-        switch ($user->role) {
-            case 'direktur':
-                return redirect()->route('dashboard-director');
-            case 'PSDM':
-                return redirect()->route('dashboard-hrd');
-            case 'project manager':
-                return redirect()->route('dashboard-PM');
-            case 'karyawan':
-                return redirect()->route('dashboard-employee');
-            default:
-                return redirect('/');
-        }
-    })->name('dashboard');
-
-    Route::middleware(['role:direktur'])->prefix('direktur')->name('dashboard.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('dashboard-director');
-        })->name('dashboard-director');
-    });
-
-    Route::middleware(['role:PSDM'])->prefix('hrd')->name('dashboard.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('dashboard-HRD');
-        })->name('hrd');
-    });
-
-    Route::middleware(['role:project manager'])->prefix('manajer-proyek')->name('dashboard.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('dashboard-PM');
-        })->name('PM');
-    });
-
-    Route::middleware(['role:karyawan'])->prefix('karyawan')->name('dashboard.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('dashboard-employee');
-        })->name('karyawan');
-    });
-});
-
-Route::get('/unauthorized', function () {
-    return view('errors.403');
-})->name('unauthorized');

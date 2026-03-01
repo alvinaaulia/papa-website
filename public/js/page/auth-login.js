@@ -35,18 +35,18 @@ $(function () {
     function redirectByRole(role) {
         switch ((role || "").toLowerCase()) {
             case "karyawan":
-                window.location.href = "/karyawan/dashboard-employee";
+                window.location.href = "/karyawan/dashboard";
                 break;
             case "project manager":
             case "pm":
-                window.location.href = "/pm/dashboard-PM";
+                window.location.href = "/pm/dashboard";
                 break;
             case "hrd":
-                window.location.href = "/hrd/dashboard-HRD";
+                window.location.href = "/hrd/dashboard";
                 break;
             case "director":
             case "direktur":
-                window.location.href = "/director/dashboard-director";
+                window.location.href = "/director/dashboard";
                 break;
             default:
                 window.location.href = "/landing-page";
