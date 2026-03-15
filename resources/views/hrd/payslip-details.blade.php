@@ -13,7 +13,7 @@
             <div class="section-header">
                 <h1>Rincian Slip Gaji</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="{{ route('payslip-hrd') }}">Riwayat Slip Gaji</a></div>
+                    <div class="breadcrumb-item active"><a href="{{ route('hrd.payslip') }}">Riwayat Slip Gaji</a></div>
                     <div class="breadcrumb-item">Rincian Slip Gaji</div>
                 </div>
             </div>

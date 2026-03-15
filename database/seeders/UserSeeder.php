@@ -23,10 +23,10 @@ class UserSeeder extends Seeder
         // PSDM/HRD
         User::create([
             'id' => Uuid::uuid4()->toString(),
-            'name' => 'Kepala PSDM',
-            'email' => 'psdm@mascitra.com',
+            'name' => 'HRD',
+            'email' => 'hrd@mascitra.com',
             'password' => Hash::make('password123'),
-            'role' => 'PSDM'
+            'role' => 'hrd'
         ]);
 
         // Project Manager

@@ -14,7 +14,7 @@
             <h1>Edit Slip Gaji</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active">
-                    <a href="{{ route('payslip-details-hrd') }}">Rincian Slip Gaji</a>
+                    <a href="{{ route('hrd.payslip-details') }}">Rincian Slip Gaji</a>
                 </div>
                 <div class="breadcrumb-item">Edit Slip Gaji</div>
             </div>

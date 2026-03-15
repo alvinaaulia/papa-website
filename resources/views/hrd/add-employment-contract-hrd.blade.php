@@ -67,7 +67,7 @@
             <div class="section-header">
                 <h1>Tambah Kontrak Kerja</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="{{ route('dashboard-hrd') }}">Dashboard</a></div>
+                    <div class="breadcrumb-item active"><a href="{{ route('hrd.dashboard') }}">Dashboard</a></div>
                     <div class="breadcrumb-item">Tambah Kontrak Kerja</div>
                 </div>
             </div>

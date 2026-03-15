@@ -17,7 +17,7 @@
             <div class="section-header">
                 <h1>Rincian Kegiatan Harian</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="{{ route('dashboard-employee') }}">Dashboard</a></div>
+                    <div class="breadcrumb-item active"><a href="{{ route('hrd.dashboard') }}">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="{{ route('daily-activities') }}">Kegiatan Harian</a></div>
                     <div class="breadcrumb-item">Rincian Kegiatan</div>
                 </div>

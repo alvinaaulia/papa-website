@@ -105,6 +105,9 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // mengambil route api user di folder api/DataMaster
     require __DIR__ . '/api/data-master/user.php';
+
+    /* api rules*/
+    require __DIR__ . '/rms/rules.php'; 
 });
 
 Route::get('employees', [UserController::class, 'index']);

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Rules\SalaryComponentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -310,22 +311,6 @@ Route::prefix('hrd')->middleware(['auth', 'role:hrd'])->group(function () {
         return view('hrd/overtime-list', ['type_menu' => 'overtime-list-hrd']);
     })->name('overtime-list-hrd');
 
-    Route::get('/payslip', function () {
-        return view('hrd/payslip', ['type_menu' => 'payslip']);
-    })->name('payslip-hrd');
-
-    Route::get('/add-payslip', function () {
-        return view('hrd/add-payslip', ['type_menu' => 'payslip']);
-    })->name('add-payslip-hrd');
-
-    Route::get('/payslip-details', function () {
-        return view('hrd/payslip-details', ['type_menu' => 'payslip']);
-    })->name('payslip-details-hrd');
-
-    Route::get('/edit-payslip', function () {
-        return view('hrd/edit-payslip', ['type_menu' => 'payslip']);
-    })->name('edit-payslip-hrd');
-
     Route::get('/data-employees', function () {
         return view('hrd/data-employees', ['type_menu' => 'data-employees']);
     })->name('data-employees-hrd');
@@ -577,4 +562,55 @@ Route::prefix('director')->middleware(['auth', 'role:direktur,director'])->group
     Route::get('/data-master-document', function () {
         return view('direktur/master-document', ['type_menu' => 'data-master-document']);
     })->name('data-master-document');
+});
+
+
+/* Routing hrd */
+Route::prefix('hrd')->middleware(['auth:sanctum', 'role:hrd'])->name('hrd.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard-HRD', ['type_menu' => 'dashboard-hrd']);
+    })->name('dashboard');
+
+    /* salary components*/ 
+    Route::get('/components', [SalaryComponentController::class, 'index'])
+    ->name('components');
+
+    Route::get('/add-components', function () {
+        return view('rules/components/add-components', ['type_menu' => 'salary-components']);
+    })->name('add-components');
+
+    Route::get('/components/{component}', [SalaryComponentController::class, 'showView'])
+    ->name('components.detail');
+    /* end salary components*/ 
+
+    /* rules */
+    Route::get('/rules', function () {
+        return view('rules/repository/rules-repository', ['type_menu' => 'rules']);
+    })->name('rules');
+
+    Route::get('/add-rules', function () {
+        return view('rules/repository/add-rules', ['type_menu' => 'rules']);
+    })->name('add-rules');
+    /* end rules*/ 
+
+    /* payslip */
+    Route::get('/payslip', function () {
+        return view('hrd/payslip', ['type_menu' => 'payslip']);
+    })->name('payslip');
+
+    Route::get('/add-payslip', function () {
+        return view('hrd/add-payslip', ['type_menu' => 'payslip']);
+    })->name('add-payslip');
+
+    Route::get('/payslip-details', function () {
+        return view('hrd/payslip-details', ['type_menu' => 'payslip']);
+    })->name('payslip-details');
+
+    Route::get('/edit-payslip', function () {
+        return view('hrd/edit-payslip', ['type_menu' => 'payslip']);
+    })->name('edit-payslip');
+
+
+
+    /* end payslip */ 
 });
