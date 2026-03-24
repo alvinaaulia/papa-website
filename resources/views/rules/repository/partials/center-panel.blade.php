@@ -16,6 +16,12 @@
                 </option>
             @endforeach
         </select>
+        @if (!empty($isEditMode))
+            <div class="existing-value">
+                <b>Data saat ini:</b>
+                <span id="existingActionCode">{{ data_get($initialRule, 'definition.action.code', '-') }}</span>
+            </div>
+        @endif
 
         <div class="muted mt-2">
             Komponen yang akan dipengaruhi oleh rule
@@ -39,6 +45,12 @@
                 <i class="fas fa-project-diagram"></i> Tambah Group
             </button>
         </div>
+        @if (!empty($isEditMode))
+            <div class="existing-value mb-3">
+                <b>Rule saat ini:</b>
+                <span id="existingConditionSummary">-</span>
+            </div>
+        @endif
 
         <div id="conditionsRoot" class="condition-root"></div>
 
@@ -61,9 +73,21 @@
             <option value="MULTIPLY_COMPONENT">MULTIPLY COMPONENT</option>
             <option value="SUBTRACT_COMPONENT">SUBTRACT COMPONENT</option>
         </select>
+        @if (!empty($isEditMode))
+            <div class="existing-value mb-2">
+                <b>Data saat ini:</b>
+                <span id="existingActionType">{{ data_get($initialRule, 'definition.action.type', '-') }}</span>
+            </div>
+        @endif
 
         <input id="actionValue" class="form-control" name="action_formula"
             placeholder="Contoh: attendance.late_minutes * rates.late_deduction_per_minute" />
+        @if (!empty($isEditMode))
+            <div class="existing-value">
+                <b>Data saat ini:</b>
+                <span id="existingActionFormula">{{ data_get($initialRule, 'definition.action.formula', '-') }}</span>
+            </div>
+        @endif
 
         <div class="muted mt-2">
             Gunakan variable seperti employee.*, attendance.*, components.*, rates.*

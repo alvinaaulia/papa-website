@@ -1,7 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Rules\AuditTrailController;
+use App\Http\Controllers\Rules\RuleController;
 use App\Http\Controllers\Rules\SalaryComponentController;
+use App\Http\Controllers\Rules\TaxController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +30,14 @@ Route::get('/', function () {
 Route::get('/login', action: function () {
     return view('login-page', ['type_menu' => 'login']);
 })->name('login');
+
+Route::post('/logout', function (Request $request) {
+    Auth::guard('web')->logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('login');
+})->name('logout');
 
 /* karyawan */
 Route::prefix('karyawan')->middleware(['auth', 'role:karyawan'])->group(function () {
@@ -454,6 +467,22 @@ Route::prefix('director')->middleware(['auth', 'role:direktur,director'])->group
         return view('direktur/leave-approval', ['type_menu' => 'leave-approval-director']);
     })->name('leave-approval-director');
 
+    Route::get('/audit-trail', [AuditTrailController::class, 'directorIndex'])
+        ->name('audit-trail-director');
+    Route::get('/audit-trail/{auditTrail}', [AuditTrailController::class, 'directorShow'])
+        ->name('audit-trail-detail-director');
+    Route::get('/rules/evaluation-report', [RuleController::class, 'directorEvaluationReport'])
+        ->name('rules-evaluation-report-director');
+
+    Route::get('/rule-approvals', [RuleController::class, 'directorApprovalIndex'])
+        ->name('rule-approval-director');
+    Route::get('/rule-approvals/{ruleVersion}', [RuleController::class, 'directorApprovalShow'])
+        ->name('rule-approval-detail-director');
+    Route::post('/rule-approvals/{ruleVersion}/approve', [RuleController::class, 'approveVersionWeb'])
+        ->name('rule-approval-approve-director');
+    Route::post('/rule-approvals/{ruleVersion}/reject', [RuleController::class, 'rejectVersionWeb'])
+        ->name('rule-approval-reject-director');
+
     Route::get('/approval-details', function () {
         return view('direktur/approval-details', ['type_menu' => 'approval-details-director']);
     })->name('approval-details-director');
@@ -551,6 +580,18 @@ Route::prefix('director')->middleware(['auth', 'role:direktur,director'])->group
         return view('direktur/master-payslip', ['type_menu' => 'data-master-payslip']);
     })->name('data-master-payslip');
 
+    Route::get('/data-master-payslip/assessment', function () {
+        return view('direktur/master-payslip-assessment', ['type_menu' => 'data-master-payslip']);
+    })->name('data-master-payslip-assessment');
+
+    Route::get('/data-master-payslip/confirmation', function () {
+        return view('direktur/master-payslip-confirmation', ['type_menu' => 'data-master-payslip']);
+    })->name('data-master-payslip-confirmation');
+
+    Route::get('/salary-grade-settings', function () {
+        return view('direktur/salary-grade-settings', ['type_menu' => 'salary-grade-settings']);
+    })->name('salary-grade-settings-director');
+
     Route::get('/edit-data-payslip', function () {
         return view('direktur/edit-data-payslip', ['type_menu' => 'edit-data-payslip']);
     })->name('edit-data-payslip');
@@ -571,7 +612,7 @@ Route::prefix('hrd')->middleware(['auth:sanctum', 'role:hrd'])->name('hrd.')->gr
         return view('dashboard-HRD', ['type_menu' => 'dashboard-hrd']);
     })->name('dashboard');
 
-    /* salary components*/ 
+    /* salary components*/
     Route::get('/components', [SalaryComponentController::class, 'index'])
     ->name('components');
 
@@ -581,17 +622,25 @@ Route::prefix('hrd')->middleware(['auth:sanctum', 'role:hrd'])->name('hrd.')->gr
 
     Route::get('/components/{component}', [SalaryComponentController::class, 'showView'])
     ->name('components.detail');
-    /* end salary components*/ 
+    /* end salary components*/
 
     /* rules */
-    Route::get('/rules', function () {
-        return view('rules/repository/rules-repository', ['type_menu' => 'rules']);
-    })->name('rules');
+    Route::get('/rules', [RuleController::class, 'index'])->name('rules');
+    Route::get('/rules/evaluation-report', [RuleController::class, 'evaluationReport'])->name('rules.evaluation-report');
+    Route::get('/audit-trail', [AuditTrailController::class, 'index'])->name('audit-trail');
+    Route::get('/audit-trail/{auditTrail}', [AuditTrailController::class, 'show'])->name('audit-trail.detail');
+    Route::get('/rules/create', [RuleController::class, 'create'])->name('rules.create');
+    Route::post('/rules/{ruleVersion}/versions', [RuleController::class, 'storeVersion'])->name('rules.versions.store');
+    Route::get('/rules/{ruleVersion}/edit', [RuleController::class, 'edit'])->name('rules.edit');
+    Route::get('/rules/{ruleVersion}', [RuleController::class, 'show'])->name('rules.show');
+    // Route::get('/add-rules', [RuleController::class, 'create'])->name('add-rules');
+    /* end rules*/
 
-    Route::get('/add-rules', function () {
-        return view('rules/repository/add-rules', ['type_menu' => 'rules']);
-    })->name('add-rules');
-    /* end rules*/ 
+    /* tax */
+    Route::get('/tax', [TaxController::class, 'index'])->name('tax');
+    Route::get('/tax/create', [TaxController::class, 'create'])->name('tax.create');
+    Route::get('/tax/{tax}', [TaxController::class, 'showView'])->name('tax.detail');
+    /* end tax */
 
     /* payslip */
     Route::get('/payslip', function () {
@@ -612,5 +661,5 @@ Route::prefix('hrd')->middleware(['auth:sanctum', 'role:hrd'])->name('hrd.')->gr
 
 
 
-    /* end payslip */ 
+    /* end payslip */
 });

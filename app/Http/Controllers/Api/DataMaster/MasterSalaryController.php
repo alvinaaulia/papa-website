@@ -46,7 +46,9 @@ class MasterSalaryController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $masterSalary = MasterSalary::with('user:id,name')->get();
+            $masterSalary = MasterSalary::with('user:id,name')
+                ->orderByDesc('updated_at')
+                ->get();
 
             Log::info('Master salaries data:', ['count' => $masterSalary->count()]);
 
@@ -69,9 +71,14 @@ class MasterSalaryController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'id_user' => 'required|uuid',
+            'id_user' => 'required|uuid|exists:users,id',
             'salary_amount' => 'required|numeric|between:0,999999999999.99',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
+            'tier_grade' => 'nullable|string|max:50',
+            'evaluation_score' => 'nullable|numeric|min:0|max:100',
+            'period_start' => 'nullable|date',
+            'period_end' => 'nullable|date|after_or_equal:period_start',
+            'assessment_notes' => 'nullable|string|max:1000',
         ]);
 
         if ($validator->fails()) {
@@ -84,15 +91,6 @@ class MasterSalaryController extends Controller
 
         DB::beginTransaction();
         try {
-            $userExists = DB::table('users')->where('id', $request->id_user)->exists();
-
-            if (!$userExists) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User tidak ditemukan'
-                ], 404);
-            }
-
             if ($request->status === 'active') {
                 MasterSalary::where('id_user', $request->id_user)
                     ->where('status', 'active')
@@ -106,9 +104,14 @@ class MasterSalaryController extends Controller
             $masterSalary = MasterSalary::create([
                 'id_user' => $request->id_user,
                 'salary_amount' => $request->salary_amount,
-                'pph21' => $pph21, // Tambahkan kolom pph21
-                'net_salary' => $netSalary, // Tambahkan kolom net_salary
-                'status' => $request->status
+                'pph21' => $pph21,
+                'net_salary' => $netSalary,
+                'tier_grade' => $request->tier_grade,
+                'evaluation_score' => $request->evaluation_score,
+                'period_start' => $request->period_start,
+                'period_end' => $request->period_end,
+                'assessment_notes' => $request->assessment_notes,
+                'status' => $request->status,
             ]);
 
             DB::commit();
@@ -142,8 +145,11 @@ class MasterSalaryController extends Controller
         $validator = Validator::make($request->all(), [
             'salary_amount' => 'required|numeric|min:0',
             'status' => 'required|in:active,inactive',
-            'pph21' => 'nullable|numeric|min:0', // Tambahkan validasi untuk PPh 21
-            'net_salary' => 'nullable|numeric|min:0', // Tambahkan validasi untuk net salary
+            'tier_grade' => 'nullable|string|max:50',
+            'evaluation_score' => 'nullable|numeric|min:0|max:100',
+            'period_start' => 'nullable|date',
+            'period_end' => 'nullable|date|after_or_equal:period_start',
+            'assessment_notes' => 'nullable|string|max:1000',
         ]);
 
         if ($validator->fails()) {
@@ -164,21 +170,23 @@ class MasterSalaryController extends Controller
                 ], 404);
             }
 
-            // Update data
+            if ($request->status === 'active') {
+                MasterSalary::where('id_user', $masterSalary->id_user)
+                    ->where('status', 'active')
+                    ->where('id_master_salary', '!=', $masterSalary->id_master_salary)
+                    ->update(['status' => 'inactive']);
+            }
+
             $masterSalary->salary_amount = $request->salary_amount;
             $masterSalary->status = $request->status;
+            $masterSalary->tier_grade = $request->tier_grade;
+            $masterSalary->evaluation_score = $request->evaluation_score;
+            $masterSalary->period_start = $request->period_start;
+            $masterSalary->period_end = $request->period_end;
+            $masterSalary->assessment_notes = $request->assessment_notes;
 
-            // Update PPh 21 dan net_salary jika dikirim dari frontend
-            if ($request->has('pph21')) {
-                $masterSalary->pph21 = $request->pph21;
-            }
-
-            if ($request->has('net_salary')) {
-                $masterSalary->net_salary = $request->net_salary;
-            } else {
-                // Jika net_salary tidak dikirim, hitung ulang
-                $masterSalary->net_salary = $request->salary_amount - ($masterSalary->pph21 ?? 0);
-            }
+            $masterSalary->pph21 = $this->calculatePPh21($request->salary_amount);
+            $masterSalary->net_salary = $request->salary_amount - $masterSalary->pph21;
 
             $masterSalary->save();
 
@@ -191,6 +199,11 @@ class MasterSalaryController extends Controller
                     'salary_amount' => $masterSalary->salary_amount,
                     'pph21' => $masterSalary->pph21,
                     'net_salary' => $masterSalary->net_salary,
+                    'tier_grade' => $masterSalary->tier_grade,
+                    'evaluation_score' => $masterSalary->evaluation_score,
+                    'period_start' => $masterSalary->period_start,
+                    'period_end' => $masterSalary->period_end,
+                    'assessment_notes' => $masterSalary->assessment_notes,
                     'status' => $masterSalary->status,
                 ],
             ], 200);

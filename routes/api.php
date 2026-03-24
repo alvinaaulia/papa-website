@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\DataMaster\MasterSalaryController;
 use App\Http\Controllers\Api\DataMaster\PositionController;
 use App\Http\Controllers\Api\DataMaster\MasterLeaveTypeController;
 use App\Http\Controllers\Api\DataMaster\MasterDocumentController;
+use App\Http\Controllers\Api\DataMaster\SalaryGradeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -123,6 +124,7 @@ Route::delete('activity-types/{activityTypesId}', [\App\Http\Controllers\Api\Dat
 Route::prefix('salary')->group(function () {
     Route::get('/', [SalaryController::class, 'index']);
     Route::post('/', [SalaryController::class, 'store']);
+    Route::get('/pending', [SalaryController::class, 'getPendingPayments']);
     Route::get('/user/{id}', [SalaryController::class, 'getByUser']);
     Route::post('/{id}/update-proof', [SalaryController::class, 'updateTransferProof']);
     Route::get('/history', [SalaryController::class, 'getSalaryHistory']);
@@ -137,6 +139,14 @@ Route::prefix('master-salary')->group(function () {
     Route::get('/users', [MasterSalaryController::class, 'getAllUsers']);
     Route::post('/{id_master_salary}', [MasterSalaryController::class, 'update']);
     Route::delete('/{id}', [MasterSalaryController::class, 'destroy']);
+});
+
+Route::prefix('salary-grades')->group(function () {
+    Route::get('/', [SalaryGradeController::class, 'index']);
+    Route::post('/', [SalaryGradeController::class, 'store']);
+    Route::post('/resolve', [SalaryGradeController::class, 'resolve']);
+    Route::post('/{id_salary_grade}', [SalaryGradeController::class, 'update']);
+    Route::delete('/{id_salary_grade}', [SalaryGradeController::class, 'destroy']);
 });
 
 Route::prefix('master-positions')->group(function () {

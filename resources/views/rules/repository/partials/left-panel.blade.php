@@ -10,6 +10,11 @@
             id="ruleName"
             class="form-control"
             placeholder="Contoh: Tunjangan Transportasi" />
+        @if (!empty($isEditMode))
+            <div class="existing-value">
+                <b>Data saat ini:</b> <span id="existingRuleName">{{ $initialRule['name'] ?? '-' }}</span>
+            </div>
+        @endif
     </div>
 
     <div class="mb-3">
@@ -18,6 +23,11 @@
             id="ruleDescription"
             class="form-control"
             placeholder="Deskripsi singkat aturan..."></textarea>
+        @if (!empty($isEditMode))
+            <div class="existing-value">
+                <b>Data saat ini:</b> <span id="existingRuleDescription">{{ $initialRule['description'] ?? '-' }}</span>
+            </div>
+        @endif
     </div>
 
     <div class="mb-3">
@@ -27,6 +37,12 @@
             <option value="HIGH">Tinggi</option>
             <option value="LOW">Rendah</option>
         </select>
+        @if (!empty($isEditMode))
+            <div class="existing-value">
+                <b>Data saat ini:</b>
+                <span id="existingRulePriority">{{ data_get($initialRule, 'definition.meta.priority', 'NORMAL') }}</span>
+            </div>
+        @endif
     </div>
 
     <div class="mb-3">
@@ -35,6 +51,12 @@
             type="date"
             id="effectiveDate"
             class="form-control" />
+        @if (!empty($isEditMode))
+            <div class="existing-value">
+                <b>Data saat ini:</b>
+                <span id="existingEffectiveDate">{{ data_get($initialRule, 'definition.meta.effective_date', '-') }}</span>
+            </div>
+        @endif
     </div>
 
     <div class="mb-3">
@@ -47,6 +69,12 @@
             type="date"
             id="endDate"
             class="form-control mt-2 d-none" />
+        @if (!empty($isEditMode))
+            <div class="existing-value">
+                <b>Data saat ini:</b>
+                <span id="existingEndDate">{{ data_get($initialRule, 'definition.meta.end_date', 'Tidak ada batas') }}</span>
+            </div>
+        @endif
     </div>
 
     <div class="component-section">

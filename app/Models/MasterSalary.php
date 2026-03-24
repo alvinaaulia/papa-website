@@ -18,6 +18,11 @@ class MasterSalary extends Model
         'salary_amount',
         'pph21',
         'net_salary',
+        'tier_grade',
+        'evaluation_score',
+        'period_start',
+        'period_end',
+        'assessment_notes',
         'status'
     ];
 
@@ -25,10 +30,18 @@ class MasterSalary extends Model
         'salary_amount' => 'decimal:2',
         'pph21' => 'decimal:2',
         'net_salary' => 'decimal:2',
+        'evaluation_score' => 'decimal:2',
+        'period_start' => 'date',
+        'period_end' => 'date',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user', 'id');
+    }
+
+    public function salaries()
+    {
+        return $this->hasMany(Salary::class, 'ID_master_salary', 'id_master_salary');
     }
 }

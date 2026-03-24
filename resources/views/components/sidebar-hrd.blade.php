@@ -95,31 +95,25 @@
             </li> --}}
 
             <li class="menu-header">Penggajian</li>
-            <li class="nav-item dropdown {{ Request::is('hrd/rules') ? 'active' : '' }}">
-                <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-square-poll-horizontal"></i><span>Aturan Gaji</span></a>
-                <ul class="dropdown-menu">
-                    <li class="{{ Request::is('hrd/components') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('hrd.components') }}">Komponen Gaji</a>
-                    </li>
-
-                    <li class="{{ Request::is('hrd/rules') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('hrd.rules') }}">Repositori Aturan</a>
-                    </li>
-                </ul>
+            <li class="{{ Request::is('hrd/tax') ? 'active' : '' }}">
+                <a href="{{ route('hrd.tax') }}" class="nav-link">
+                    <i class="fas fa-calendar"></i><span> Pajak </span>
+                </a>
             </li>
-            <li class="nav-item dropdown {{ Request::is('hrd/payslip') ? 'active' : '' }}">
-                <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-square-poll-horizontal"></i><span>Slip Gaji</span></a>
-                <ul class="dropdown-menu">
-                    <li class="{{ Request::is('hrd.payslip') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('hrd.payslip') }}">Riwayat Gaji Karyawan</a>
-                    </li>
-
-                    <li class="{{ Request::is('hrd.add-payslip') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('hrd.add-payslip') }}">Tambah Slip Gaji</a>
-                    </li>
-                </ul>
+            <li class="{{ Request::is('hrd/components') ? 'active' : '' }}">
+                <a href="{{ route('hrd.components') }}" class="nav-link">
+                    <i class="fas fa-calendar"></i><span> Komponen Gaji </span>
+                </a>
+            </li>
+            <li class="{{ Request::is('hrd/rules') ? 'active' : '' }}">
+                <a href="{{ route('hrd.rules') }}" class="nav-link">
+                    <i class="fas fa-calendar"></i><span> Repositori Aturan </span>
+                </a>
+            </li>
+            <li class="{{ Request::is('hrd/payslip') ? 'active' : '' }}">
+                <a href="{{ route('hrd.payslip') }}" class="nav-link">
+                    <i class="fas fa-calendar"></i><span> Slip Gaji </span>
+                </a>
             </li>
 
             <li class="menu-header">Laporan</li>
@@ -138,6 +132,16 @@
                     <i class="fas fa-chart-line"></i><span> Laporan Kinerja </span>
                 </a>
             </li>
+            <li class="{{ Request::is('hrd/rules/evaluation-report') ? 'active' : '' }}">
+                <a href="{{ route('hrd.rules.evaluation-report') }}" class="nav-link">
+                    <i class="fas fa-sitemap"></i><span> Evaluasi Aturan Gaji </span>
+                </a>
+            </li>
+            <li class="{{ Request::is('hrd/audit-trail') ? 'active' : '' }}">
+                <a href="{{ route('hrd.audit-trail') }}" class="nav-link">
+                    <i class="fas fa-clock-rotate-left"></i><span> Audit Trail </span>
+                </a>
+            </li>
 
             <li class="menu-header">Profil</li>
             <li class="nav-item">
@@ -147,10 +151,13 @@
             </li>
 
             <div class="sidebar-mini mt-4 mb-4 p-3">
-                <a href="https://getstisla.com/docs" class="btn btn-lg btn-block btn-icon-split"
-                    style="background-color: #d51c48; color: white;;">
-                    <i class="fas fa-right-from-bracket"></i><span>Logout</span>
-                </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-lg btn-block btn-icon-split"
+                        style="background-color: #d51c48; color: white; border: 0;">
+                        <i class="fas fa-right-from-bracket"></i><span>Logout</span>
+                    </button>
+                </form>
             </div>
         </ul>
     </aside>

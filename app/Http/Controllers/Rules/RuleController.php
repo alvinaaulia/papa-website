@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\JsonResponse;
 
 use App\Models\Rules\Rule;
 use App\Models\Rules\RuleVersion;
@@ -23,11 +24,21 @@ class RuleController extends Controller
      */
     public function index()
     {
-        $rules = \App\Models\Rules\Rule::with('latestVersion')
-            ->latest()
+        $rules = Rule::with(['latestVersion'])
+            ->withCount('versions')
+            ->whereHas('versions')
+            ->orderByDesc(
+                RuleVersion::select('created_at')
+                    ->whereColumn('rule_id', 'rules.id')
+                    ->latest('version')
+                    ->limit(1)
+            )
             ->paginate(10);
 
-        return view('rules.repository.rules-repository', compact('rules'));
+        return view('rules.repository.rules-repository', [
+            'rules' => $rules,
+            'type_menu' => 'rules',
+        ]);
     }
 
     public function create()
@@ -36,27 +47,262 @@ class RuleController extends Controller
             ->orderBy('component_code')
             ->get();
 
-        return view('rules.repository.add-rules', compact('components'));
+        return view('rules.repository.add-rules', [
+            'components' => $components,
+            'type_menu' => 'rules',
+        ]);
     }
 
-    private function requireDirector(Request $request): void
+    public function evaluationReport()
     {
-        $u = $request->user();
-        if (!$u || ($u->role ?? null) !== 'DIRECTOR') {
-            abort(403, 'Only DIRECTOR can approve/reject rules.');
-        }
+        $rules = Rule::with(['latestVersion'])
+            ->withCount('versions')
+            ->whereHas('versions')
+            ->orderBy('name')
+            ->get();
+
+        $summary = [
+            'total_rules' => $rules->count(),
+            'total_versions' => RuleVersion::count(),
+            'active_versions' => RuleVersion::where('status', RuleVersion::STATUS_ACTIVE)->count(),
+            'draft_versions' => RuleVersion::where('status', RuleVersion::STATUS_DRAFT)->count(),
+            'pending_approvals' => RuleVersion::where('approval_status', RuleVersion::APPROVAL_PENDING)->count(),
+            'rejected_versions' => RuleVersion::where('approval_status', RuleVersion::APPROVAL_REJECTED)->count(),
+        ];
+
+        return view('rules.reports.evaluation-report', [
+            'rules' => $rules,
+            'summary' => $summary,
+            'type_menu' => 'rules-evaluation-report',
+        ]);
     }
 
-    /**
-     * CREATE rule + first version (DRAFT, approval PENDING).
-     * Also maps the rule_version to a salary component based on action.code.
-     */
-    public function store(Request $request)
+    public function directorEvaluationReport()
+    {
+        $rules = Rule::with(['latestVersion'])
+            ->withCount('versions')
+            ->whereHas('versions')
+            ->orderBy('name')
+            ->get();
+
+        $summary = [
+            'total_rules' => $rules->count(),
+            'total_versions' => RuleVersion::count(),
+            'active_versions' => RuleVersion::where('status', RuleVersion::STATUS_ACTIVE)->count(),
+            'draft_versions' => RuleVersion::where('status', RuleVersion::STATUS_DRAFT)->count(),
+            'pending_approvals' => RuleVersion::where('approval_status', RuleVersion::APPROVAL_PENDING)->count(),
+            'rejected_versions' => RuleVersion::where('approval_status', RuleVersion::APPROVAL_REJECTED)->count(),
+        ];
+
+        return view('rules.reports.director-evaluation-report', [
+            'rules' => $rules,
+            'summary' => $summary,
+            'type_menu' => 'rules-evaluation-report-director',
+        ]);
+    }
+
+    public function directorApprovalIndex()
+    {
+        $rules = Rule::with([
+                'latestVersion',
+                'versions' => function ($query) {
+                    $query->where('approval_status', RuleVersion::APPROVAL_PENDING)
+                        ->latest('version');
+                },
+            ])
+            ->withCount('versions')
+            ->withCount([
+                'versions as pending_versions_count' => function ($query) {
+                    $query->where('approval_status', RuleVersion::APPROVAL_PENDING);
+                },
+            ])
+            ->whereHas('versions')
+            ->orderBy('name')
+            ->paginate(10, ['*'], 'rules_page');
+
+        $pendingVersions = RuleVersion::with(['rule', 'salaryComponents'])
+            ->where('approval_status', RuleVersion::APPROVAL_PENDING)
+            ->latest('created_at')
+            ->paginate(10);
+
+        return view('rules.approval.index', [
+            'rules' => $rules,
+            'pendingVersions' => $pendingVersions,
+            'type_menu' => 'rule-approval-director',
+        ]);
+    }
+
+    public function directorApprovalShow(RuleVersion $ruleVersion)
+    {
+        $ruleVersion->load(['rule', 'salaryComponents']);
+
+        return view('rules.approval.detail', [
+            'ruleVersion' => $ruleVersion,
+            'type_menu' => 'rule-approval-director',
+        ]);
+    }
+
+    public function show(RuleVersion $ruleVersion)
+    {
+        $ruleVersion->load(['rule', 'salaryComponents']);
+
+        $versions = RuleVersion::with('salaryComponents')
+            ->where('rule_id', $ruleVersion->rule_id)
+            ->latest('version')
+            ->get();
+
+        return view('rules.repository.rule-detail', [
+            'ruleVersion' => $ruleVersion,
+            'versions' => $versions,
+            'type_menu' => 'rules',
+        ]);
+    }
+
+    public function edit(RuleVersion $ruleVersion)
+    {
+        $ruleVersion->load(['rule', 'salaryComponents']);
+
+        if ($ruleVersion->status !== RuleVersion::STATUS_DRAFT) {
+            return redirect()
+                ->route('hrd.rules.show', $ruleVersion)
+                ->with('error', 'Hanya versi dengan status DRAFT yang dapat diedit.');
+        }
+
+        $components = SalaryComponent::where('is_active', true)
+            ->orderBy('component_code')
+            ->get();
+
+        return view('rules.repository.edit-rule', [
+            'ruleVersion' => $ruleVersion,
+            'components' => $components,
+            'type_menu' => 'rules',
+        ]);
+    }
+
+    public function storeVersion(Request $request, RuleVersion $ruleVersion)
+    {
+        $ruleVersion->load(['rule', 'salaryComponents']);
+
+        return DB::transaction(function () use ($request, $ruleVersion) {
+            $nextVersionNumber = (int) RuleVersion::where('rule_id', $ruleVersion->rule_id)->max('version') + 1;
+
+            $newVersion = RuleVersion::create([
+                'rule_id' => $ruleVersion->rule_id,
+                'version' => $nextVersionNumber,
+                'status' => RuleVersion::STATUS_DRAFT,
+                'approval_status' => null,
+                'definition' => $ruleVersion->definition,
+                'created_by' => $request->user()?->id,
+                'approved_by' => null,
+                'approved_at' => null,
+                'rejected_by' => null,
+                'rejected_at' => null,
+                'decision_notes' => null,
+                'activated_at' => null,
+            ]);
+
+            $componentIds = $ruleVersion->salaryComponents
+                ->pluck('component_id')
+                ->filter()
+                ->unique()
+                ->values();
+
+            foreach ($componentIds as $componentId) {
+                RuleVersionComponent::create([
+                    'rule_version_id' => $newVersion->id,
+                    'component_id' => $componentId,
+                ]);
+            }
+
+            AuditLogger::log(
+                $request,
+                'RULE_VERSION_CREATE',
+                $newVersion->id,
+                null,
+                [
+                    'rule_id' => $ruleVersion->rule_id,
+                    'source_rule_version_id' => $ruleVersion->id,
+                    'version' => $newVersion->version,
+                    'status' => $newVersion->status,
+                    'approval_status' => $newVersion->approval_status,
+                    'definition' => $newVersion->definition,
+                    'component_ids' => $componentIds->all(),
+                ],
+                'Created new draft rule version from existing version'
+            );
+
+            return redirect()
+                ->route('hrd.rules.edit', $newVersion)
+                ->with('success', "Draft versi {$newVersion->version} berhasil dibuat. Silakan edit dulu sebelum diajukan.");
+        });
+    }
+
+    public function updateVersion(Request $request, RuleVersion $ruleVersion): JsonResponse
+    {
+        if ($ruleVersion->status !== RuleVersion::STATUS_DRAFT) {
+            abort(422, 'Hanya versi DRAFT yang dapat diedit.');
+        }
+
+        $submitAfterSave = filter_var($request->input('submit_after_save', false), FILTER_VALIDATE_BOOLEAN);
+        $data = $this->validateRulePayload($request);
+        $component = $this->findActiveComponent($data['definition']['action']['code']);
+
+        return DB::transaction(function () use ($request, $ruleVersion, $data, $component, $submitAfterSave) {
+            $before = $ruleVersion->load(['rule', 'salaryComponents'])->toArray();
+
+            $ruleVersion->rule->update([
+                'name' => $data['name'],
+                'description' => $data['description'] ?? null,
+            ]);
+
+            $ruleVersion->update([
+                'definition' => $data['definition'],
+                'created_by' => $request->user()?->id ?? $ruleVersion->created_by,
+                'approval_status' => $submitAfterSave ? RuleVersion::APPROVAL_PENDING : $ruleVersion->approval_status,
+                'approved_by' => null,
+                'approved_at' => null,
+                'rejected_by' => null,
+                'rejected_at' => null,
+                'decision_notes' => null,
+            ]);
+
+            RuleVersionComponent::where('rule_version_id', $ruleVersion->id)->delete();
+
+            RuleVersionComponent::create([
+                'rule_version_id' => $ruleVersion->id,
+                'component_id' => $component->component_id,
+            ]);
+
+            AuditLogger::log(
+                $request,
+                'RULE_VERSION_UPDATE',
+                $ruleVersion->id,
+                $before,
+                $ruleVersion->fresh()->load(['rule', 'salaryComponents'])->toArray(),
+                $submitAfterSave
+                    ? 'Updated draft rule version and submitted for approval'
+                    : 'Updated draft rule version'
+            );
+
+            return response()->json([
+                'message' => $submitAfterSave
+                    ? 'Perubahan berhasil disimpan dan diajukan untuk approval.'
+                    : 'Draft versi berhasil disimpan.',
+                'redirect_url' => route('hrd.rules.show', $ruleVersion),
+                'rule_version_id' => $ruleVersion->id,
+                'version' => $ruleVersion->version,
+                'status' => $ruleVersion->status,
+                'approval_status' => $ruleVersion->approval_status,
+            ]);
+        });
+    }
+
+    private function validateRulePayload(Request $request): array
     {
         $data = $request->validate([
             'name' => 'required|string|max:150',
+            'description' => 'nullable|string|max:1000',
             'definition' => 'required|array',
-
             'definition.conditions' => 'required|array|min:1',
             'definition.action' => 'required|array',
             'definition.action.type' => 'required|string',
@@ -64,11 +310,13 @@ class RuleController extends Controller
             'definition.action.formula' => 'required|string',
         ]);
 
-        // Normalize action code
-        $actionCode = strtoupper(trim($data['definition']['action']['code']));
-        $data['definition']['action']['code'] = $actionCode;
+        $data['definition']['action']['code'] = strtoupper(trim($data['definition']['action']['code']));
 
-        // Ensure component exists & active
+        return $data;
+    }
+
+    private function findActiveComponent(string $actionCode): SalaryComponent
+    {
         $component = SalaryComponent::where('component_code', $actionCode)
             ->where('is_active', true)
             ->first();
@@ -81,14 +329,36 @@ class RuleController extends Controller
             ]);
         }
 
+        return $component;
+    }
+
+    private function requireDirector(Request $request): void
+    {
+        $u = $request->user();
+        $role = strtolower((string) ($u->role ?? ''));
+        if (!$u || !in_array($role, ['director', 'direktur'], true)) {
+            abort(403, 'Only DIRECTOR can approve/reject rules.');
+        }
+    }
+
+    /**
+     * CREATE rule + first version (DRAFT, approval PENDING).
+     * Also maps the rule_version to a salary component based on action.code.
+     */
+    public function store(Request $request)
+    {
+        $data = $this->validateRulePayload($request);
+        $component = $this->findActiveComponent($data['definition']['action']['code']);
+
         return DB::transaction(function () use ($request, $data, $component) {
 
             // 1) Create rule master
             $rule = Rule::create([
                 'name' => $data['name'],
+                'description' => $data['description'] ?? null,
             ]);
 
-            // 2) Create first rule version (DRAFT + PENDING approval)
+            // 2) Create first rule version and immediately submit it for director approval
             $version = RuleVersion::create([
                 'rule_id' => $rule->id,
                 'version' => 1,
@@ -128,11 +398,11 @@ class RuleController extends Controller
                     'component_code' => $component->component_code,
                     'component_id' => $component->component_id,
                 ],
-                "Created first rule version (DRAFT, approval PENDING)"
+                "Created first rule version and automatically submitted for approval"
             );
 
             return response()->json([
-                'message' => 'Rule saved (DRAFT, PENDING approval) and mapped to component',
+                'message' => 'Aturan berhasil disimpan dan otomatis diajukan ke direktur untuk approval',
                 'rule_id' => $rule->id,
                 'rule_version_id' => $version->id,
                 'version' => $version->version,
@@ -217,6 +487,15 @@ class RuleController extends Controller
         ]);
     }
 
+    public function approveVersionWeb(Request $request, RuleVersion $ruleVersion)
+    {
+        $this->approveVersion($request, $ruleVersion);
+
+        return redirect()
+            ->route('rule-approval-detail-director', $ruleVersion)
+            ->with('success', 'Rule version berhasil di-approve.');
+    }
+
     /**
      * DIRECTOR: Reject a rule version (notes required).
      */
@@ -252,6 +531,15 @@ class RuleController extends Controller
             'message' => 'Rule version rejected',
             'rule_version' => $ruleVersion->fresh(),
         ]);
+    }
+
+    public function rejectVersionWeb(Request $request, RuleVersion $ruleVersion)
+    {
+        $this->rejectVersion($request, $ruleVersion);
+
+        return redirect()
+            ->route('rule-approval-detail-director', $ruleVersion)
+            ->with('success', 'Rule version berhasil di-reject.');
     }
 
     /**

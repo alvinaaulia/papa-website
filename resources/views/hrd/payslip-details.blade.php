@@ -90,7 +90,7 @@
                                                         <div class="font-weight-bold" id="gross-salary-display">-</div>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <small>Potongan PPh 21:</small>
+                                                        <small>Total Potongan:</small>
                                                         <div class="font-weight-bold" id="pph21-display">-</div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="overtime-button">
-                                <a href="{{ route('payslip-hrd') }}">
+                                <a href="{{ route('hrd.payslip') }}">
                                     <button type="button" class="btn btn-secondary"
                                         style="padding: 0.5rem 2rem">Kembali</button>
                                 </a>

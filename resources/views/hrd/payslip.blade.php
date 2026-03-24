@@ -1,270 +1,558 @@
 @extends('layouts.app-hrd')
 
-@section('title', 'Riwayat Slip Gaji')
+@section('title', 'Slip Gaji')
+
+@push('customStyle')
+    <style>
+        .payslip-hero {
+            border-radius: 18px;
+            background:
+                radial-gradient(circle at top right, rgba(255, 255, 255, .18), transparent 24%),
+                linear-gradient(135deg, #991b1b, #b91c1c 46%, #ef4444);
+            color: #fff;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .payslip-hero h1 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .payslip-hero p {
+            max-width: 760px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, .88);
+            margin-bottom: 0;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .summary-card,
+        .content-card {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, .04);
+        }
+
+        .summary-card {
+            padding: 18px;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .summary-note {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .content-card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #eef2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .content-card-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .content-card-subtitle {
+            margin-top: 4px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .content-card-body {
+            padding: 20px;
+        }
+
+        .inline-upload {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .inline-upload input[type="file"] {
+            max-width: 220px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-awaiting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .amount-strong {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .empty-state-box {
+            text-align: center;
+            padding: 42px 20px;
+            color: #64748b;
+        }
+
+        .empty-state-box i {
+            font-size: 30px;
+            color: #cbd5e1;
+            margin-bottom: 10px;
+        }
+
+        .table thead th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: #64748b;
+            border-top: 0;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 992px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+@endpush
 
 @section('main')
     <div class="main-content">
         <section class="section">
-            <div class="section-header">
-                <h1>Riwayat Slip Gaji</h1>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="{{ route('hrd.dashboard') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item">Riwayat Slip Gaji</div>
+            <div class="payslip-hero">
+                <h1>Slip Gaji & Validasi Pembayaran</h1>
+                <p>
+                    Halaman ini menampilkan otomatis daftar karyawan yang menunggu pembayaran gaji. Tim HRD cukup
+                    mengunggah bukti transfer, lalu slip gaji akan langsung tergenerate dan masuk ke riwayat slip gaji.
+                </p>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-label">Menunggu Pembayaran</div>
+                    <div class="summary-value" id="pendingCount">0</div>
+                    <div class="summary-note">Karyawan aktif yang belum menerima gaji di periode ini</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Slip Tergenerate</div>
+                    <div class="summary-value" id="paidCount">0</div>
+                    <div class="summary-note">Slip gaji yang sudah dibuat dari upload bukti transfer</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Periode Pembayaran</div>
+                    <div class="summary-value" id="selectedPeriodLabel">-</div>
+                    <div class="summary-note">Gunakan filter tanggal untuk mengatur batch pembayaran</div>
                 </div>
             </div>
 
-            <div class="section-body">
-                <div class="row">
-                    <div class="title-leave" style="padding-left: 20px; margin-bottom: 2rem;">
-                        <div class="title-lead">
-                            Slip Gaji
-                        </div>
-                        <div class="sub-lead" style="font-size: 1rem; padding-left: 20px">
-                            Daftar Slip Gaji Karyawan
-                        </div>
+            <div class="content-card mb-4">
+                <div class="content-card-header">
+                    <div>
+                        <h3 class="content-card-title">Karyawan Menunggu Pembayaran</h3>
+                        <div class="content-card-subtitle">Upload bukti transfer untuk membuat slip gaji secara otomatis.</div>
                     </div>
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header-payroll">
-                                <h4>Tabel Slip Gaji</h4>
-                            </div>
-                            <div class="card-body">
 
-                                <button class="btn btn-primary btn-sm" id="refreshButton" style="margin-bottom: 1rem;">
-                                    <i class="fas fa-sync-alt"></i> Refresh Data
-                                </button>
+                    <div class="d-flex align-items-center" style="gap:10px;">
+                        <input type="date" id="paymentDateFilter" class="form-control" style="width: 190px;">
+                        <button class="btn btn-light" id="refreshPendingButton">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
 
-                                <div id="emptyState" class="text-center" style="display: none;">
-                                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                    <p class="text-muted">Tidak ada data slip gaji</p>
-                                </div>
-                                <div id="loading-indicator" class="text-center">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
-                                    <p class="mt-2">Memuat data...</p>
-                                </div>
+                <div class="content-card-body">
+                    <div id="pendingError" class="alert alert-danger d-none"></div>
 
-                                <div id="error-message" class="alert alert-danger d-none">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                    <span id="error-text"></span>
-                                    <button type="button" class="btn btn-sm btn-light ml-2" onclick="retryLoadData()">
-                                        <i class="fas fa-redo"></i> Coba Lagi
-                                    </button>
-                                </div>
+                    <div class="table-responsive" id="pendingTableWrapper">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Karyawan</th>
+                                    <th>Gaji Kotor</th>
+                                    <th>PPh 21</th>
+                                    <th>Take Home Pay</th>
+                                    <th>Status</th>
+                                    <th>Bukti Transfer</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingTableBody"></tbody>
+                        </table>
+                    </div>
 
-                                <div id="success-message" class="alert alert-success d-none">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span id="success-text"></span>
-                                </div>
+                    <div id="pendingEmptyState" class="empty-state-box d-none">
+                        <div><i class="fas fa-check-circle"></i></div>
+                        <div class="font-weight-600 mb-1">Tidak ada pembayaran yang menunggu</div>
+                        <div>Semua karyawan aktif pada periode ini sudah memiliki slip gaji.</div>
+                    </div>
+                </div>
+            </div>
 
-                                <div class="table d-none" id="salary-table">
-                                    <table class="table table-bordered">
-                                        <thead class="overtime-data">
-                                            <tr class="text-center">
-                                                <th style="width: 5%;">No.</th>
-                                                <th style="width: 15%;">Nama Karyawan</th>
-                                                <th style="width: 15%;">Tanggal Penyerahan</th>
-                                                <th style="width: 10%;">Jumlah</th>
-                                                <th style="width: 10%;">Bukti Transfer</th>
-                                                <th style="width: 15%;">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="overtime-data" id="salary-table-body">
-                                        </tbody>
-                                    </table>
-                                </div>
+            <div class="content-card">
+                <div class="content-card-header">
+                    <div>
+                        <h3 class="content-card-title">Riwayat Slip Gaji</h3>
+                        <div class="content-card-subtitle">Slip yang sudah tergenerate setelah pembayaran divalidasi.</div>
+                    </div>
 
-                                <div id="empty-state" class="text-center d-none">
-                                    <div class="empty-state" data-height="200">
-                                        <div class="empty-state-icon">
-                                            <i class="fas fa-file-invoice-dollar"></i>
-                                        </div>
-                                        <h2>Data Slip Gaji Kosong</h2>
-                                        <p class="lead">
-                                            Belum ada data slip gaji yang tercatat.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <button class="btn btn-light" id="refreshHistoryButton">
+                        <i class="fas fa-sync-alt"></i> Refresh Riwayat
+                    </button>
+                </div>
+
+                <div class="content-card-body">
+                    <div id="historyError" class="alert alert-danger d-none"></div>
+                    <div id="historySuccess" class="alert alert-success d-none"></div>
+
+                    <div class="table-responsive" id="historyTableWrapper">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Karyawan</th>
+                                    <th>Tanggal Pembayaran</th>
+                                    <th>Jumlah Dibayarkan</th>
+                                    <th>Bukti Transfer</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div id="historyEmptyState" class="empty-state-box d-none">
+                        <div><i class="fas fa-file-invoice-dollar"></i></div>
+                        <div class="font-weight-600 mb-1">Belum ada slip gaji</div>
+                        <div>Slip akan muncul otomatis setelah bukti transfer diunggah.</div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
-    <div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="proofModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="fotoModalLabel">Bukti Transfer</h5>
-                    {{-- <button type="button" class="btn-close" onclick="closeFotoModal()"></button> --}}
+                    <h5 class="modal-title" id="proofModalLabel">Bukti Transfer</h5>
                 </div>
                 <div class="modal-body text-center">
-                    <img id="transfer-proof-image" src="" alt="Bukti Transfer" class="img-fluid rounded shadow-sm"
+                    <img id="proofImage" src="" alt="Bukti Transfer" class="img-fluid rounded shadow-sm d-none"
                         style="max-height: 70vh; object-fit: contain;">
-                    <div id="no-proof-message" class="d-none">
-                        <i class="fas fa-file-image fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">Bukti transfer tidak tersedia</p>
-                    </div>
+                    <iframe id="proofPdf" class="w-100 d-none" style="min-height: 70vh; border:0;"></iframe>
                 </div>
                 <div class="modal-footer">
-                    <a id="download-proof-link" href="#" class="btn btn-primary" download>
+                    <a id="proofDownloadLink" href="#" class="btn btn-primary" download>
                         <i class="fas fa-download"></i> Download
                     </a>
-                    <button type="button" class="btn btn-secondary" onclick="closeFotoModal()">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeProofModal()">Tutup</button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true"
-        class="modal-overlay">
-        <div class="modal-delete-box">
-            <div class="modal-icons">
-                <div class="modal-trash">
-                    <div class="trash-circle"></div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-trash-fill" viewBox="0 0 16 16">
-                        <path
-                            d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                    </svg>
-                </div>
-                <button class="modal-close" onclick="closeDeleteModal()">✕</button>
-            </div>
-            <div class="modal-text">
-                <h2 class="modal-title">Hapus Pengajuan Cuti</h2>
-                <p class="modal-text" style="margin: 0px">
-                    Yakin ingin menghapus pengajuan cuti ini?<br>
-                    Tindakan ini tidak dapat dibatalkan.
-                </p>
-            </div>
-            <div class="modal-actions" style="gap: 2rem; margin: 2rem 0px 1rem 0px;">
-                <button class="btn btn-secondary btn-footer" style="padding: 0.5rem 3rem"
-                    onclick="closeDeleteModal()">Batal</button>
-                <button class="btn btn-danger btn-footer" style="padding: 0.5rem 3rem"
-                    id="confirmDeleteBtn">Hapus</button>
             </div>
         </div>
     </div>
 @endsection
 
 @push('customScript')
-    <script src="{{ asset('js/payslip-history-hrd.js') }}"></script>
     <script>
-        function displaySalaryData(data) {
-            const tableBody = document.getElementById('salary-table-body');
-            const tableContainer = document.getElementById('salary-table');
-            const emptyState = document.getElementById('empty-state');
-            const loadingIndicator = document.getElementById('loading-indicator');
+        let proofModalInstance;
+        let pendingEmployees = [];
+        let salaryHistory = [];
 
-            loadingIndicator.classList.add('d-none');
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }).format(Number(amount || 0));
+        }
 
-            if (data.length === 0) {
-                tableContainer.classList.add('d-none');
+        function formatShortDate(dateString) {
+            if (!dateString) return '-';
+            return new Date(dateString).toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+            });
+        }
+
+        function setSelectedPeriodLabel(dateString) {
+            const targetDate = new Date(dateString);
+            document.getElementById('selectedPeriodLabel').textContent = targetDate.toLocaleDateString('id-ID', {
+                month: 'long',
+                year: 'numeric',
+            });
+        }
+
+        function setSummaryCounts() {
+            document.getElementById('pendingCount').textContent = pendingEmployees.length;
+            document.getElementById('paidCount').textContent = salaryHistory.length;
+        }
+
+        async function loadPendingPayments() {
+            const date = document.getElementById('paymentDateFilter').value;
+            setSelectedPeriodLabel(date);
+
+            try {
+                document.getElementById('pendingError').classList.add('d-none');
+
+                const response = await fetch(`/api/salary/pending?salary_date=${encodeURIComponent(date)}`);
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || 'Gagal memuat daftar pembayaran pending');
+                }
+
+                pendingEmployees = result.data || [];
+                renderPendingTable();
+                setSummaryCounts();
+            } catch (error) {
+                const errorEl = document.getElementById('pendingError');
+                errorEl.textContent = error.message;
+                errorEl.classList.remove('d-none');
+            }
+        }
+
+        async function loadSalaryHistory() {
+            try {
+                document.getElementById('historyError').classList.add('d-none');
+                const response = await fetch('/api/salary/history');
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || 'Gagal memuat riwayat slip gaji');
+                }
+
+                salaryHistory = result.data || [];
+                renderHistoryTable();
+                setSummaryCounts();
+            } catch (error) {
+                const errorEl = document.getElementById('historyError');
+                errorEl.textContent = error.message;
+                errorEl.classList.remove('d-none');
+            }
+        }
+
+        function renderPendingTable() {
+            const tbody = document.getElementById('pendingTableBody');
+            const emptyState = document.getElementById('pendingEmptyState');
+            const tableWrapper = document.getElementById('pendingTableWrapper');
+
+            tbody.innerHTML = '';
+
+            if (pendingEmployees.length === 0) {
+                tableWrapper.classList.add('d-none');
                 emptyState.classList.remove('d-none');
                 return;
             }
 
-            tableContainer.classList.remove('d-none');
+            tableWrapper.classList.remove('d-none');
             emptyState.classList.add('d-none');
 
-            tableBody.innerHTML = '';
-
-            data.forEach((salary, index) => {
+            pendingEmployees.forEach((employee) => {
                 const row = document.createElement('tr');
-                row.className = 'text-center';
-
-                const formattedDate = formatDate(salary.salary_date);
-                const formattedAmount = formatCurrency(salary.salary_amount);
-
-                const hasProof = salary.transfer_proof !== null && salary.transfer_proof !== '';
-                const proofButtonText = hasProof ? 'Buka foto' : 'Tidak ada';
-                const proofButtonClass = hasProof ? 'evidence' : 'text-muted';
-                const proofButtonStyle = hasProof ? 'cursor: pointer; text-decoration: none' :
-                    'cursor: default; text-decoration: none';
-
                 row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${salary.employee_name}</td>
-                <td>${formattedDate}</td>
-                <td>${formattedAmount}</td>
-                <td>
-                    <a href="#" class="${proofButtonClass}"
-                       style="${proofButtonStyle}"
-                       ${hasProof ? `onclick="openFotoModal('${salary.transfer_proof}', '${salary.employee_name}')"` : 'onclick="return false;"'}>
-                        ${proofButtonText}
-                    </a>
-                </td>
-                <td>
-                    <div class="btn-group" style="gap: 0.5rem;">
-                        <span>
-                            <a href="{{ route('payslip-details-hrd') }}?id=${salary.id}" class="btn btn-primary">
-                                <i class="fas fa-eye"></i> Rincian
-                            </a>
-                        </span>
-                        <span>
-                            <button type="button" class="btn btn-danger" onclick="confirmDelete(${salary.id}, '${salary.employee_name}')">
-                                <i class="fas fa-trash"></i> Hapus
+                    <td>
+                        <div class="font-weight-700">${employee.employee_name}</div>
+                        <div class="text-muted small">Master Salary ID #${employee.id_master_salary}</div>
+                    </td>
+                    <td class="amount-strong">${formatCurrency(employee.salary_amount)}</td>
+                    <td>${formatCurrency(employee.pph21)}</td>
+                    <td class="amount-strong">${formatCurrency(employee.net_salary)}</td>
+                    <td><span class="status-pill status-awaiting">Menunggu Pembayaran</span></td>
+                    <td>
+                        <form class="inline-upload pending-upload-form" data-master-salary-id="${employee.id_master_salary}">
+                            <input type="hidden" name="salary_date" value="${employee.salary_date}">
+                            <input type="file" name="transfer_proof" accept=".jpg,.jpeg,.png,.pdf" class="form-control form-control-sm" required>
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-upload"></i> Upload & Generate
                             </button>
-                        </span>
-                    </div>
-                </td>
-            `;
+                        </form>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
 
-                tableBody.appendChild(row);
+            document.querySelectorAll('.pending-upload-form').forEach((form) => {
+                form.addEventListener('submit', handlePendingUpload);
             });
         }
 
-        function openFotoModal(proofPath, employeeName) {
-            const modalEl = document.getElementById('fotoModal');
-            const imageEl = document.getElementById('transfer-proof-image');
-            const noProofEl = document.getElementById('no-proof-message');
-            const downloadLink = document.getElementById('download-proof-link');
-            const modalTitle = document.getElementById('fotoModalLabel');
+        function renderHistoryTable() {
+            const tbody = document.getElementById('historyTableBody');
+            const emptyState = document.getElementById('historyEmptyState');
+            const tableWrapper = document.getElementById('historyTableWrapper');
 
-            modalTitle.textContent = `Bukti Transfer - ${employeeName}`;
+            tbody.innerHTML = '';
 
-            if (proofPath) {
-                console.log('Original proofPath:', proofPath);
-                const storageUrl = `{{ Storage::url('') }}${proofPath}`;
-                console.log('Final image URL:', storageUrl);
+            if (salaryHistory.length === 0) {
+                tableWrapper.classList.add('d-none');
+                emptyState.classList.remove('d-none');
+                return;
+            }
 
+            tableWrapper.classList.remove('d-none');
+            emptyState.classList.add('d-none');
+
+            salaryHistory.forEach((salary) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="font-weight-700">${salary.employee_name}</div>
+                        <div class="text-muted small">Slip #${salary.id}</div>
+                    </td>
+                    <td>${formatShortDate(salary.salary_date)}</td>
+                    <td class="amount-strong">${formatCurrency(salary.salary_amount)}</td>
+                    <td>
+                        ${salary.transfer_proof
+                            ? `<a href="#" onclick="openProofModal('${salary.transfer_proof}', '${salary.employee_name}'); return false;">Lihat Bukti</a>`
+                            : `<span class="text-muted">Tidak ada</span>`}
+                    </td>
+                    <td>
+                        <a href="{{ route('hrd.payslip-details') }}?id=${salary.id}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye"></i> Rincian
+                        </a>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function handlePendingUpload(event) {
+            event.preventDefault();
+
+            const form = event.currentTarget;
+            const masterSalaryId = form.getAttribute('data-master-salary-id');
+            const fileInput = form.querySelector('input[name="transfer_proof"]');
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            if (!fileInput.files.length) {
+                alert('Silakan upload bukti transfer terlebih dahulu.');
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses';
+
+            try {
+                const formData = new FormData(form);
+                formData.append('id_master_salary', masterSalaryId);
+
+                const response = await fetch('/api/salary', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || 'Gagal mengunggah bukti transfer');
+                }
+
+                showHistorySuccess(result.message || 'Slip gaji berhasil dibuat otomatis.');
+                await Promise.all([loadPendingPayments(), loadSalaryHistory()]);
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-upload"></i> Upload & Generate';
+            }
+        }
+
+        function showHistorySuccess(message) {
+            const successEl = document.getElementById('historySuccess');
+            successEl.textContent = message;
+            successEl.classList.remove('d-none');
+
+            setTimeout(() => {
+                successEl.classList.add('d-none');
+            }, 3000);
+        }
+
+        function openProofModal(proofPath, employeeName) {
+            const imageEl = document.getElementById('proofImage');
+            const pdfEl = document.getElementById('proofPdf');
+            const downloadLink = document.getElementById('proofDownloadLink');
+            const titleEl = document.getElementById('proofModalLabel');
+            const storageUrl = `{{ Storage::url('') }}${proofPath}`;
+
+            titleEl.textContent = `Bukti Transfer - ${employeeName}`;
+            downloadLink.href = storageUrl;
+
+            imageEl.classList.add('d-none');
+            pdfEl.classList.add('d-none');
+
+            if (proofPath.toLowerCase().endsWith('.pdf')) {
+                pdfEl.src = storageUrl;
+                pdfEl.classList.remove('d-none');
+            } else {
                 imageEl.src = storageUrl;
                 imageEl.classList.remove('d-none');
-                noProofEl.classList.add('d-none');
-
-                downloadLink.href = storageUrl;
-                downloadLink.classList.remove('d-none');
-
-                imageEl.onerror = function() {
-                    console.error('Failed to load image:', storageUrl);
-                    imageEl.classList.add('d-none');
-                    noProofEl.classList.remove('d-none');
-                    downloadLink.classList.add('d-none');
-
-                    showError('Gagal memuat bukti transfer. File mungkin tidak ditemukan.');
-                };
-
-                imageEl.onload = function() {
-                    console.log('Image loaded successfully:', storageUrl);
-                };
-
-            } else {
-                imageEl.classList.add('d-none');
-                noProofEl.classList.remove('d-none');
-                downloadLink.classList.add('d-none');
             }
 
-            fotoModalInstance = new bootstrap.Modal(modalEl);
-            fotoModalInstance.show();
+            proofModalInstance = new bootstrap.Modal(document.getElementById('proofModal'));
+            proofModalInstance.show();
         }
 
-        function closeFotoModal() {
-            if (fotoModalInstance) {
-                fotoModalInstance.hide();
+        function closeProofModal() {
+            if (proofModalInstance) {
+                proofModalInstance.hide();
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('paymentDateFilter').value = today;
+
+            loadPendingPayments();
+            loadSalaryHistory();
+
+            document.getElementById('refreshPendingButton').addEventListener('click', loadPendingPayments);
+            document.getElementById('refreshHistoryButton').addEventListener('click', loadSalaryHistory);
+            document.getElementById('paymentDateFilter').addEventListener('change', loadPendingPayments);
+        });
     </script>
 @endpush

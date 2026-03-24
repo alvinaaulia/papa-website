@@ -34,7 +34,7 @@
                 <div class="col-12">
 
                     {{-- FORM --}}
-                    <form id="payslipForm" data-redirect-url="{{ route('payslip-hrd') }}" enctype="multipart/form-data">
+                    <form id="payslipForm" data-redirect-url="{{ route('hrd.payslip') }}" enctype="multipart/form-data">
 
                         {{-- === CARD DETAIL GAJI === --}}
                         <div class="card">
@@ -139,7 +139,7 @@
 
                         {{-- BUTTON --}}
                         <div class="overtime-button mt-4">
-                            <a href="{{ route('payslip-details-hrd') }}" class="btn btn-light px-4">Batal</a>
+                            <a href="{{ route('hrd.payslip-details') }}" class="btn btn-light px-4">Batal</a>
 
                             <button type="submit" id="submitBtn" class="btn btn-danger px-4">
                                 <span id="submitText">Simpan Perubahan</span>

@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'rule_engine' => [
+        'url' => env('RULE_ENGINE_URL', 'http://localhost:8081'),
+    ],
+
 ];

@@ -12,8 +12,51 @@
                 <a href="{{ route('dashboard-director') }}" class="nav-link"><i
                         class="fas fa-home"></i><span>Dashboard</span></a>
             </li>
-            <li class="menu-header">Utama</li>
 
+            <li class="menu-header">Master Data</li>
+            <li class="{{ Request::is('director/data-employees-director') ? 'active' : '' }}">
+                <a href="{{ route('data-employees-director') }}" class="nav-link">
+                    <i class="fa fa-users"></i><span> Karyawan </span>
+                </a>
+            </li>
+
+            <li class="{{ Request::is('director/data-master-payslip*') ? 'active' : '' }}">
+                <a href="{{ route('data-master-payslip') }}" class="nav-link">
+                    <i class="fa fa-wallet"></i><span> Gaji </span>
+                </a>
+            </li>
+
+            <li class="{{ Request::is('director/salary-grade-settings') ? 'active' : '' }}">
+                <a href="{{ route('salary-grade-settings-director') }}" class="nav-link">
+                    <i class="fas fa-layer-group"></i><span> Tier/Grade Gaji </span>
+                </a>
+            </li>
+
+            <li class="{{ Request::is('director/data-master-position') ? 'active' : '' }}">
+                <a href="{{ route('data-master-position') }}" class="nav-link">
+                    <i class="fa fa-wallet"></i><span> Jabatan </span>
+                </a>
+            </li>
+
+            <li class="{{ Request::is('director/daily-activity-types') ? 'active' : '' }}">
+                <a href="{{ route('daily-activity-types') }}" class="nav-link">
+                    <i class="fas fa-book"></i><span> Jenis Kegiatan Harian </span>
+                </a>
+            </li>
+
+            <li class="{{ Request::is('director/leave-type') ? 'active' : '' }}">
+                <a href="{{ route('leave-type') }}" class="nav-link">
+                    <i class="fa fa-calendar-days"></i><span> Jenis Cuti </span>
+                </a>
+            </li>
+
+            <li class="{{ Request::is('director/data-master-document') ? 'active' : '' }}">
+                <a href="{{ route('data-master-document') }}" class="nav-link">
+                    <i class="fa fa-wallet"></i><span> Jenis Dokumen </span>
+                </a>
+            </li>
+
+            <li class="menu-header">OPERASIONAL</li>
             <li class="{{ Request::is('director/presence') ? 'active' : '' }}">
                 <a href="{{ route('presence-director') }}" class="nav-link">
                     <i class="fas fa-pen" aria-hidden="true"></i><span>Absensi</span>
@@ -23,12 +66,6 @@
             <li class="{{ Request::is('director/leave-list-director') ? 'active' : '' }}">
                 <a href="{{ route('leave-list-director') }}" class="nav-link">
                     <i class="fas fa-clipboard" aria-hidden="true"></i><span>Cuti</span>
-                </a>
-            </li>
-
-            <li class="{{ Request::is('director/leave-approval-director') ? 'active' : '' }}">
-                <a href="{{ route('leave-approval-director') }}" class="nav-link">
-                    <i class="fas fa-newspaper" aria-hidden="true"></i><span>Persetujuan Cuti</span>
                 </a>
             </li>
 
@@ -50,12 +87,6 @@
                 </a>
             </li>
 
-            <li class="{{ Request::is('director/overtime-approval-director') ? 'active' : '' }}">
-                <a href="{{ route('overtime-approval-director') }}" class="nav-link">
-                    <i class="fas fa-calendar"></i><span> Persetujuan Lembur </span>
-                </a>
-            </li>
-
             <li class="nav-item dropdown {{ $type_menu === 'employment-contract' ? 'active' : '' }}">
                 <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i
                         class="fas fa-handshake"></i><span>Kontrak Kerja</span></a>
@@ -68,6 +99,31 @@
                     </li>
                 </ul>
             </li>
+
+            <li class="menu-header">Persetujuan</li>
+            <li class="{{ Request::is('director/leave-approval-director') ? 'active' : '' }}">
+                <a href="{{ route('leave-approval-director') }}" class="nav-link">
+                    <i class="fas fa-newspaper" aria-hidden="true"></i><span>Persetujuan Cuti</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('director/overtime-approval-director') ? 'active' : '' }}">
+                <a href="{{ route('overtime-approval-director') }}" class="nav-link">
+                    <i class="fas fa-calendar"></i><span> Persetujuan Lembur </span>
+                </a>
+            </li>
+            <li class="{{ Request::is('director/rule-approvals*') ? 'active' : '' }}">
+                <a href="{{ route('rule-approval-director') }}" class="nav-link">
+                    <i class="fas fa-square-poll-horizontal"></i> <span> Persetujuan Aturan </span>
+                </a>
+            </li>
+
+            <li class="menu-header">Penggajian</li>
+            <li class="{{ Request::is('director/payslip') ? 'active' : '' }}">
+                <a href="{{ route('payslip-director') }}" class="nav-link">
+                    <i class="fas fa-square-poll-horizontal"></i> <span> Slip Gaji </span>
+                </a>
+            </li>
+
 
             <li class="menu-header">Laporan</li>
             <li class="{{ Request::is('director/presence-recap') ? 'active' : '' }}">
@@ -87,51 +143,19 @@
                     <i class="fas fa-chart-line"></i><span> Laporan Kinerja </span>
                 </a>
             </li>
-
-            <li class="{{ Request::is('director/payslip') ? 'active' : '' }}">
-                <a href="{{ route('payslip-director') }}" class="nav-link">
-                    <i class="fas fa-square-poll-horizontal"></i> <span> Slip Gaji </span>
+            <li class="{{ Request::is('director/rules/evaluation-report') ? 'active' : '' }}">
+                <a href="{{ route('rules-evaluation-report-director') }}" class="nav-link">
+                    <i class="fas fa-file-signature"></i><span> Evaluasi Aturan Gaji </span>
+                </a>
+            </li>
+            <li class="{{ Request::is('director/audit-trail*') ? 'active' : '' }}">
+                <a href="{{ route('audit-trail-director') }}" class="nav-link">
+                    <i class="fas fa-clock-rotate-left"></i><span> Audit Trail </span>
                 </a>
             </li>
 
-            <li class="menu-header">Master Data</li>
-            <li class="{{ Request::is('director/daily-activity-types') ? 'active' : '' }}">
-                <a href="{{ route('daily-activity-types') }}" class="nav-link">
-                    <i class="fas fa-book"></i><span> Jenis Kegiatan Harian </span>
-                </a>
-            </li>
-
-
-            <li class="{{ Request::is('director/data-employees-director') ? 'active' : '' }}">
-                <a href="{{ route('data-employees-director') }}" class="nav-link">
-                    <i class="fa fa-users"></i><span> Data Master Karyawan </span>
-                </a>
-            </li>
-
-            <li class="{{ Request::is('director/data-master-payslip') ? 'active' : '' }}">
-                <a href="{{ route('data-master-payslip') }}" class="nav-link">
-                    <i class="fa fa-wallet"></i><span> Data Master Gaji </span>
-                </a>
-            </li>
-
-            <li class="{{ Request::is('director/data-master-position') ? 'active' : '' }}">
-                <a href="{{ route('data-master-position') }}" class="nav-link">
-                    <i class="fa fa-wallet"></i><span> Data Master Jabatan </span>
-                </a>
-            </li>
-
-            <li class="{{ Request::is('director/leave-type') ? 'active' : '' }}">
-                <a href="{{ route('leave-type') }}" class="nav-link">
-                    <i class="fa fa-calendar-days"></i><span> Data Master Jenis Cuti </span>
-                </a>
-            </li>
-
-            <li class="{{ Request::is('director/data-master-document') ? 'active' : '' }}">
-                <a href="{{ route('data-master-document') }}" class="nav-link">
-                    <i class="fa fa-wallet"></i><span> Data Master Jenis Dokumen </span>
-                </a>
-            </li>
-
+            
+            <li class="menu-header">Profil</li>
             <li class="{{ Request::is('director/profile-director') ? 'active' : '' }}">
                 <a href="{{ route('profile-director') }}" class="nav-link">
                     <i class="fas fa-user"></i> <span> Profil </span>
@@ -139,10 +163,13 @@
             </li>
 
             <div class="sidebar-mini mt-4 mb-4 p-3">
-                <a href="https://getstisla.com/docs" class="btn btn-lg btn-block btn-icon-split"
-                    style="background-color: #d51c48; color: white;;">
-                    <i class="fas fa-right-from-bracket"></i><span>Logout</span>
-                </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-lg btn-block btn-icon-split"
+                        style="background-color: #d51c48; color: white; border: none;">
+                        <i class="fas fa-right-from-bracket"></i><span>Logout</span>
+                    </button>
+                </form>
             </div>
         </ul>
     </aside>

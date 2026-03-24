@@ -33,7 +33,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <form id="payslipForm" enctype="multipart/form-data" data-redirect-url="{{ route('payslip-hrd') }}">
+                        <form id="payslipForm" enctype="multipart/form-data" data-redirect-url="{{ route('hrd.payslip') }}">
                             @csrf
                             <div class="card">
                                 <div class="card-header-leave">
@@ -133,7 +133,7 @@
                             </div>
                             
                             <div class="overtime-button">
-                                <a href="{{ route('payslip-hrd') }}" class="btn btn-light">Batal</a>
+                                <a href="{{ route('hrd.payslip') }}" class="btn btn-light">Batal</a>
                                 <button type="submit" class="btn btn-danger" id="submitBtn">
                                     <span id="submitText">Buat Slip Gaji</span>
                                     <div id="submitSpinner" class="spinner-border spinner-border-sm d-none"

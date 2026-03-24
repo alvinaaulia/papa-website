@@ -89,9 +89,19 @@
 
     $approvalBadgeClass = function ($status) {
         return match (strtoupper((string) $status)) {
+            '', 'DRAFT' => 'badge-nonaktif',
             'APPROVED' => 'badge-approved',
             'REJECTED' => 'badge-rejected',
             default => 'badge-pending',
+        };
+    };
+
+    $approvalLabel = function ($status) {
+        return match (strtoupper((string) $status)) {
+            '', 'DRAFT' => 'Belum diajukan',
+            'APPROVED' => 'Approved',
+            'REJECTED' => 'Rejected',
+            default => 'Pending',
         };
     };
 @endphp
@@ -237,7 +247,7 @@
                     <h1 class="mb-0">Daftar Aturan</h1>
                 </div>
 
-                <a href="{{ url('/rules/create') }}" class="btn btn-primary">
+                <a href="{{ url('/hrd/rules/create') }}" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Buat Aturan Baru
                 </a>
             </div>
@@ -257,11 +267,19 @@
                             <tbody>
                                 @forelse ($rules as $rule)
                                     @php
-                                        $version = $rule->latestVersion;
+                                        $ruleModel = $rule;
+                                        $version = $ruleModel->latestVersion;
 
                                         $definition = is_array($version?->definition) ? $version->definition : [];
                                         $conditions = $definition['conditions'] ?? [];
                                         $action = $definition['action'] ?? [];
+
+                                        if (is_array($conditions) && array_is_list($conditions)) {
+                                            $conditions = [
+                                                'type' => 'AND',
+                                                'rules' => $conditions,
+                                            ];
+                                        }
 
                                         $conditionText = $conditionToText($conditions);
 
@@ -271,9 +289,7 @@
                                         $formula = $action['formula'] ?? '-';
 
                                         $status = strtoupper((string) ($version?->status ?? 'DRAFT'));
-                                        $approvalStatus = strtoupper(
-                                            (string) ($version?->approval_status ?? 'PENDING'),
-                                        );
+                                        $approvalStatus = strtoupper((string) ($version?->approval_status ?? ''));
                                     @endphp
 
                                     <tr>
@@ -284,11 +300,14 @@
                                                 </div>
 
                                                 <div>
-                                                    <div class="rule-name">{{ $rule->name }}</div>
+                                                    <div class="rule-name">{{ $ruleModel?->name ?? '-' }}</div>
                                                     <div class="rule-sub">
-                                                        Dibuat {{ $rule->created_at?->diffForHumans() ?? '-' }}
+                                                        Diperbarui {{ $version->created_at?->diffForHumans() ?? '-' }}
                                                         @if ($version?->version)
                                                             • Versi {{ $version->version }}
+                                                        @endif
+                                                        @if (isset($ruleModel->versions_count))
+                                                            • {{ $ruleModel->versions_count }} versi
                                                         @endif
                                                     </div>
                                                 </div>
@@ -310,13 +329,13 @@
 
                                                 <span class="badge-status {{ $approvalBadgeClass($approvalStatus) }}">
                                                     <i class="fas fa-check-circle" style="font-size:10px;"></i>
-                                                    {{ ucfirst(strtolower($approvalStatus)) }}
+                                                    {{ $approvalLabel($approvalStatus) }}
                                                 </span>
                                             </div>
                                         </td>
 
                                         <td>
-                                            <a href="javascript:void(0)" class="text-primary btn-detail">
+                                            <a href="{{ route('hrd.rules.show', $version) }}" class="text-primary btn-detail">
                                                 Detail <i class="fas fa-chevron-right"></i>
                                             </a>
                                         </td>
@@ -339,7 +358,8 @@
                     <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
                         <div class="footer-meta">
                             @if (method_exists($rules, 'total'))
-                                Menampilkan {{ $rules->firstItem() ?? 0 }} sampai {{ $rules->lastItem() ?? 0 }}
+                                Menampilkan {{ $rules->firstItem() ?? 0 }} sampai
+                                {{ $rules->lastItem() ?? 0 }}
                                 dari {{ $rules->total() }} aturan
                             @else
                                 Menampilkan {{ $rules->count() }} aturan

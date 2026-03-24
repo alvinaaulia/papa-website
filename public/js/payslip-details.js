@@ -79,16 +79,18 @@ function displaySalaryDetail(data) {
     document.getElementById("salary-date").value = formatDate(data.salary_date);
 
     // Tampilkan detail gaji
-    const grossSalary = data.gross_salary || data.master_salary_amount || 0;
-    const pph21 =
+    const grossSalary = Number(data.gross_salary || data.master_salary_amount || 0);
+    const netSalary = Number(data.net_salary || data.salary_amount || 0);
+    const totalDeductions = Number(
+        data.total_deductions ||
         data.pph21 ||
-        grossSalary - (data.net_salary || data.salary_amount || 0);
-    const netSalary = data.net_salary || data.salary_amount || 0;
+        Math.max(grossSalary - netSalary, 0)
+    );
 
     document.getElementById("gross-salary-display").textContent =
         formatCurrency(grossSalary);
     document.getElementById("pph21-display").textContent =
-        formatCurrency(pph21);
+        formatCurrency(totalDeductions);
     document.getElementById("net-salary-display").textContent =
         formatCurrency(netSalary);
 
@@ -99,7 +101,7 @@ function displaySalaryDetail(data) {
     document
         .getElementById("cetak-button")
         .addEventListener("click", function () {
-            generatePayslipFromDetail(data, grossSalary, pph21, netSalary);
+            generatePayslipFromDetail(data);
         });
 }
 
@@ -116,7 +118,7 @@ function displayTransferProof(proofPath, employeeName) {
 }
 
 // Fungsi untuk generate payslip dari detail (MENGGUNAKAN DESAIN SEBELUMNYA)
-function generatePayslipFromDetail(data, grossSalary, pph21, netSalary) {
+function generatePayslipFromDetail(data) {
     const formatRupiah = (number) => {
         return new Intl.NumberFormat("id-ID", {
             style: "currency",
@@ -147,16 +149,88 @@ function generatePayslipFromDetail(data, grossSalary, pph21, netSalary) {
         );
     };
 
-    const gajiPokok = grossSalary;
-    const potonganPph = pph21;
-    const totalPenghasilan = grossSalary;
-    const totalPotongan = pph21;
-    const penerimaanBersih = netSalary;
+    const escapeHtml = (value) =>
+        String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
 
-    const now = new Date();
-    const bulan = now.toLocaleDateString("id-ID", { month: "long" });
-    const tahun = now.getFullYear();
-    const tanggalCetak = now.toLocaleDateString("id-ID", {
+    const normalizeItems = (items) =>
+        Array.isArray(items)
+            ? items
+                  .map((item) => ({
+                      code: String(item.code || ""),
+                      name: String(item.name || item.code || "-"),
+                      amount: Number(item.amount || 0),
+                  }))
+                  .filter((item) => item.amount !== 0)
+            : [];
+
+    const grossSalary = Number(data.gross_salary || data.master_salary_amount || 0);
+    const netSalary = Number(data.net_salary || data.salary_amount || 0);
+    const fallbackPph21 = Number(data.pph21 || 0);
+
+    const earningsRaw = normalizeItems(data.earnings);
+    const deductionsRaw = normalizeItems(data.deductions);
+
+    const earnings = earningsRaw.filter((item) => item.code !== "BASIC_SALARY");
+    const deductions = [...deductionsRaw];
+    if (deductions.length === 0 && fallbackPph21 > 0) {
+        deductions.push({
+            code: "PPH21",
+            name: "PPh 21",
+            amount: fallbackPph21,
+        });
+    }
+
+    let basicSalary = Number(
+        data.calculation_facts?.employee?.basic_salary ||
+            data.rule_engine_result?.summary?.basic_salary ||
+            0
+    );
+    if (!basicSalary) {
+        const extraEarning = earnings.reduce((sum, item) => sum + item.amount, 0);
+        basicSalary = Math.max(grossSalary - extraEarning, 0);
+    }
+
+    const totalPenghasilan = grossSalary;
+    const totalPotongan = Number(
+        data.total_deductions ||
+            deductions.reduce((sum, item) => sum + item.amount, 0) ||
+            fallbackPph21
+    );
+    const penerimaanBersih = Number(data.net_salary || data.salary_amount || totalPenghasilan - totalPotongan);
+
+    const earningRows = earnings.length
+        ? earnings
+              .map(
+                  (item) => `
+                <tr><td>${escapeHtml(item.name)}</td><td>=</td><td>${formatRupiah(item.amount)
+                      .replace("Rp", "")
+                      .trim()}</td></tr>
+            `
+              )
+              .join("")
+        : '<tr><td colspan="3">-</td></tr>';
+
+    const deductionRows = deductions.length
+        ? deductions
+              .map(
+                  (item) => `
+                <tr><td>${escapeHtml(item.name)}</td><td>=</td><td>${formatRupiah(item.amount)
+                      .replace("Rp", "")
+                      .trim()}</td></tr>
+            `
+              )
+              .join("")
+        : '<tr><td colspan="3">-</td></tr>';
+
+    const paymentDate = new Date(data.salary_date);
+    const bulan = paymentDate.toLocaleDateString("id-ID", { month: "long" });
+    const tahun = paymentDate.getFullYear();
+    const tanggalCetak = new Date().toLocaleDateString("id-ID", {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -216,13 +290,10 @@ function generatePayslipFromDetail(data, grossSalary, pph21, netSalary) {
         <div style="width: 48%;">
             <h4><strong>PENGHASILAN</strong></h4>
             <table>
-                <tr><td>Gaji Pokok</td><td>=</td><td>${formatRupiah(gajiPokok)
+                <tr><td>Gaji Pokok</td><td>=</td><td>${formatRupiah(basicSalary)
                     .replace("Rp", "")
                     .trim()}</td></tr>
-                <tr><td>Tj. Jabatan</td><td>=</td><td>-</td></tr>
-                <tr><td>Tj. Konsumsi</td><td>=</td><td>-</td></tr>
-                <tr><td>Tj. Harian</td><td>=</td><td>-</td></tr>
-                <tr><td>Bonus Target</td><td>=</td><td>-</td></tr>
+                ${earningRows}
                 <tr><td colspan="2"><strong>Total (A)</strong></td><td><strong>${formatRupiah(
                     totalPenghasilan
                 )}</strong></td></tr>
@@ -232,10 +303,7 @@ function generatePayslipFromDetail(data, grossSalary, pph21, netSalary) {
         <div style="width: 48%;">
             <h4><strong>POTONGAN</strong></h4>
             <table>
-                <tr><td>PPh 21</td><td>=</td><td>${formatRupiah(potonganPph)
-                    .replace("Rp", "")
-                    .trim()}</td></tr>
-                <tr><td>Asuransi</td><td>=</td><td>-</td></tr>
+                ${deductionRows}
                 <tr><td colspan="2"><strong>Total (B)</strong></td><td><strong>${formatRupiah(
                     totalPotongan
                 )}</strong></td></tr>

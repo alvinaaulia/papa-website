@@ -283,10 +283,17 @@
 @section('main')
     <div class="main-content">
         <section class="section">
-            <div class="section-header d-flex justify-content-between align-items-center">
-                <h1>Tambah Komponen Gaji</h1>
+            <div class="section-header d-flex justify-content-between align-items-center flex-wrap" style="gap:12px;">
+                <div>
+                    <h1 class="mb-0">Tambah Aturan Gaji</h1>
+                    <div class="text-muted">
+                        Aturan baru akan langsung dibuat sebagai <b>DRAFT</b> dan otomatis diajukan ke direktur
+                        dengan status <b>PENDING approval</b>.
+                    </div>
+                </div>
+
                 <button id="btnSaveRule" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Simpan Aturan
+                    <i class="fas fa-paper-plane"></i> Simpan & Ajukan Approval
                 </button>
             </div>
 
@@ -308,6 +315,11 @@
             const definitionInput = document.getElementById('definitionJson');
 
             const ruleNameInput = document.getElementById('ruleName');
+            const ruleDescriptionInput = document.getElementById('ruleDescription');
+            const rulePriorityInput = document.getElementById('rulePriority');
+            const effectiveDateInput = document.getElementById('effectiveDate');
+            const endDateModeInput = document.getElementById('endDateMode');
+            const endDateInput = document.getElementById('endDate');
             const actionCodeInput = document.getElementById('actionCode');
             const actionTypeInput = document.getElementById('actionType');
             const actionValueInput = document.getElementById('actionValue');
@@ -393,6 +405,15 @@
                 return trimmed;
             }
 
+            function toggleEndDateInput() {
+                const shouldShow = endDateModeInput.value === 'DATE';
+                endDateInput.classList.toggle('d-none', !shouldShow);
+
+                if (!shouldShow) {
+                    endDateInput.value = '';
+                }
+            }
+
             const OPERATOR_TEXT = {
                 "==": "sama dengan",
                 "!=": "tidak sama dengan",
@@ -463,8 +484,15 @@
             function buildRulePayload() {
                 return {
                     name: ruleNameInput.value.trim(),
+                    description: ruleDescriptionInput.value.trim(),
                     definition: {
                         conditions: serializeContainer(conditionsRoot, 'AND'),
+                        meta: {
+                            description: ruleDescriptionInput.value.trim(),
+                            priority: rulePriorityInput.value,
+                            effective_date: effectiveDateInput.value || null,
+                            end_date: endDateModeInput.value === 'DATE' ? (endDateInput.value || null) : null,
+                        },
                         action: {
                             type: actionTypeInput.value,
                             code: actionCodeInput.value,
@@ -561,6 +589,13 @@
                 el.addEventListener('change', updatePreview);
             });
 
+            [ruleDescriptionInput, rulePriorityInput, effectiveDateInput, endDateModeInput, endDateInput].forEach(el => {
+                el?.addEventListener('input', updatePreview);
+                el?.addEventListener('change', updatePreview);
+            });
+
+            endDateModeInput?.addEventListener('change', toggleEndDateInput);
+
             btnSaveRule?.addEventListener('click', async function() {
                 const payload = buildRulePayload();
                 const error = validatePayload(payload);
@@ -592,20 +627,21 @@
                         return;
                     }
 
-                    alert(result.message || 'Rule berhasil disimpan');
-                    window.location.href = '/rules';
-                } catch (error) {
-                    console.error(error);
-                    alert('Terjadi kesalahan saat menyimpan rule');
-                } finally {
-                    btnSaveRule.disabled = false;
-                }
+                        alert(result.message || 'Aturan berhasil disimpan dan diajukan untuk approval');
+                        window.location.href = "{{ route('hrd.rules') }}";
+                    } catch (error) {
+                        console.error(error);
+                        alert('Terjadi kesalahan saat menyimpan aturan');
+                    } finally {
+                        btnSaveRule.disabled = false;
+                    }
             });
 
             btnRunSim?.addEventListener('click', function() {
                 alert('Fitur simulasi belum dihubungkan ke backend.');
             });
 
+            toggleEndDateInput();
             appendCondition(conditionsRoot);
             updatePreview();
         });
